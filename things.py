@@ -26,17 +26,19 @@ def set_axes(ctx,axes_color):
     ctx.line_to(0.5, 1)
     ctx.close_path()
     ctx.set_source_rgb(axes_color.get_red(), axes_color.get_green(), axes_color.get_blue())
-    ctx.set_line_width(0.002)
+    ctx.set_line_width(0.005)
     ctx.stroke()
 
     ctx.move_to(0, 0.5)
     ctx.line_to(1, 0.5)
     ctx.close_path()
     ctx.set_source_rgb(axes_color.get_red(), axes_color.get_green(), axes_color.get_blue())
-    ctx.set_line_width(0.002)
+    ctx.set_line_width(0.005)
     ctx.stroke()
+    shape = Geometry()
 
     ctx.translate(0.5, 0.5)
+    shape.draw_grid(ctx, axes_color)
     ctx.scale(1, -1)
 
 
@@ -59,7 +61,7 @@ def setup_canvas(colour, WIDTH, HEIGHT, alpha=1):
 class Geometry(object):
     """Includes all the geometric functions which can used to draw a shape"""
 
-    def draw_line(self, ctx, p1, p2, colour):
+    def draw_line(self, ctx, p1, p2, colour, width):
         """Draws a line on the canvas
 
         Params:-
@@ -71,10 +73,10 @@ class Geometry(object):
         ctx.line_to(p2.x, p2.y)
         ctx.close_path()
         ctx.set_source_rgb(colour.get_blue(), colour.get_green(), colour.get_blue())
-        ctx.set_line_width(0.005)
+        ctx.set_line_width(width)
         ctx.stroke()
 
-    def draw_triangle(self, ctx, p1, p2, p3, colour):
+    def draw_triangle(self, ctx, p1, p2, p3, colour,width):
         """Draws a triangle on the canvas
 
         Params:-
@@ -83,11 +85,11 @@ class Geometry(object):
             colour - Colour of the sides
         """
 
-        self.draw_line(ctx, p1, p2, colour)
-        self.draw_line(ctx, p2, p3, colour)
-        self.draw_line(ctx, p3, p1, colour)
+        self.draw_line(ctx, p1, p2, colour,width)
+        self.draw_line(ctx, p2, p3, colour,width)
+        self.draw_line(ctx, p3, p1, colour,width)
 
-    def draw_quad(self, ctx, p1, p2, p3, p4, colour):
+    def draw_quad(self, ctx, p1, p2, p3, p4, colour,width):
         """Draws a quadrilateral on the canvas
 
         Params:-
@@ -96,10 +98,10 @@ class Geometry(object):
             colour - Colour of the sides
         """
 
-        self.draw_line(ctx, p1, p2, colour)
-        self.draw_line(ctx, p3, p4, colour)
-        self.draw_line(ctx, p2, p3, colour)
-        self.draw_line(ctx, p1, p4, colour)
+        self.draw_line(ctx, p1, p2, colour,width)
+        self.draw_line(ctx, p3, p4, colour,width)
+        self.draw_line(ctx, p2, p3, colour,width)
+        self.draw_line(ctx, p1, p4, colour,width)
 
     def draw_polygon(self, ctx, colour, pointNum, *p):
         """Draws a polygon with 'pointNum' number of points on the canvas
@@ -111,4 +113,21 @@ class Geometry(object):
         """
 
         for i in range(0,pointNum):
-            self.draw_line(ctx, p[i-1], p[i], colour)
+            self.draw_line(ctx, p[i-1], p[i], colour,0.005)
+
+    def draw_grid(self,ctx, colour):
+        for i in range(-100, 100, 10):
+            for j in range(-100, 100, 10):
+                p1 = point(i,j)
+                p2 = point(i+10,j)
+                p3 = point(i+10,j+10)
+                p4 = point(i,j+10)
+                self.draw_quad(ctx, p1, p2, p3, p4, colour,0.001)
+
+        for i in range(-100, 100, 5):
+            for j in range(-100, 100, 5):
+                p1 = point(i,j)
+                p2 = point(i+10,j)
+                p3 = point(i+10,j+10)
+                p4 = point(i,j+10)
+                self.draw_quad(ctx, p1, p2, p3, p4, colour,0.001)
