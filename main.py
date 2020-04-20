@@ -1,12 +1,11 @@
 #!/usr/bin/env python3
 # import the necessary modules
 from gi import require_foreign
-from gi import repository
-import things
+
 from tkinter import colorchooser, Tk
 from colour import Color
 require_foreign('cairo')
-import gui
+from modules import gui, geometry, set_axes, setup_canvas
 
 #Hide an extra window which opened along with the color chooser dialog
 window = Tk()
@@ -21,11 +20,11 @@ axes_color = Color(colorchooser.askcolor(title="Choose a color for the axes", in
 line_color = Color(colorchooser.askcolor(title="Choose a color for the line", initialcolor="grey")[1])
 
 #Points for drawing the square which is just for testing
-p1 = things.point()
-p2 = things.point()
-p3 = things.point()
-p4 = things.point()
-shape = things.Geometry()
+p1 = geometry.point()
+p2 = geometry.point()
+p3 = geometry.point()
+p4 = geometry.point()
+shape = geometry.Geometry()
 
 # Set the coordinates for the points for the border
 p1.set_coord(100, 100)
@@ -34,12 +33,14 @@ p3.set_coord(-100, -100)
 p4.set_coord(100, -100)
 
 # pycairo objects for making the graph
-ctx, surface = things.setup_canvas(bg_color, WIDTH, HEIGHT, 0)
-things.set_axes(ctx, axes_color)
+ctx, surface = setup_canvas(bg_color, WIDTH, HEIGHT, 0)
+back_ctx, back_surface = setup_canvas(bg_color, WIDTH, HEIGHT, 0)
+set_axes(ctx, axes_color)
+set_axes(back_ctx, axes_color)
 
 #The code for the main application
-app = gui.QtWidgets.QApplication(["Graph Plotter"])# Name the application
-graphPlotter = gui.Graph(ctx, surface, line_color)# Make the window
+app = gui.QtWidgets.QApplication(["Graph Plotter"])# Name of the application
+graphPlotter = gui.Graph(ctx, surface, line_color, [back_ctx, surface])# Make the window
 surface.write_to_png("graph.png")# Save the basic graph that will be shown on the application
 graphPlotter.setImage("graph.png")# Set the Graph for the application
 graphPlotter.show()
