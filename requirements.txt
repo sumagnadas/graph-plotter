@@ -1,0 +1,5 @@
+colour==0.1.5
+pycairo==1.19.1
+pycodestyle==2.5.0
+PySide2==5.14.2
+shiboken2==5.14.2

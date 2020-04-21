@@ -1,4 +1,5 @@
 import cairo
+from PySide2.QtCore import QPoint
 
 class point(object):
     """Class implementation of a point in graph"""
@@ -9,6 +10,16 @@ class point(object):
     def set_coord(self, x, y):
         self.x = x/200
         self.y = y/200
+
+class Point(QPoint):
+    """Class implementation of a point in graph"""
+
+    def __init__(self, x=0, y=0):
+        x *= 15
+        x += 300
+        y *= 15
+        y = -y + 300
+        super().__init__(x, y)
 
 class Geometry(object):
     """Includes all the geometric functions which can used to draw a shape"""
