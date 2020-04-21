@@ -1,4 +1,6 @@
 import cairo, colour
+import modules.geometry
+import modules.gui
 
 def set_axes(ctx,axes_color):
     """Draws the axes on the canvas of the cairo object
