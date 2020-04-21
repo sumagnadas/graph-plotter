@@ -1,26 +1,19 @@
 #!/usr/bin/env python3
 # import the necessary modules
-from tkinter import colorchooser, Tk
 from colour import Color
 from modules import geometry, set_axes, setup_canvas
 from modules.gui import Graph, QtWidgets
 import sys
 
-#Hide an extra window which opened along with the color chooser dialog
-#window = Tk()
-#window.withdraw()
-
 # Some necessary variables
-WIDTH, HEIGHT = 600, 600 # Width and height of the graph
+WIDTH, HEIGHT = 600, 600  # Width and height of the graph
 
 # Color objects for having customizable graph colors
-#bg_color = Color(colorchooser.askcolor(title="Choose a color for the background", initialcolor="white")[1])
 bg_color = Color("white")
-#axes_color = Color(colorchooser.askcolor(title="Choose a color for the axes", initialcolor="black")[1])
 axes_color = Color("black")
-#line_color = Color(colorchooser.askcolor(title="Choose a color for the line", initialcolor="grey")[1])
 line_color = Color("black")
-#Points for drawing the square which is just for testing
+
+# Points for drawing the square which is just for testing
 p1 = geometry.point()
 p2 = geometry.point()
 p3 = geometry.point()
@@ -37,9 +30,8 @@ p4.set_coord(100, -100)
 ctx, surface = setup_canvas(bg_color, WIDTH, HEIGHT, 0)
 set_axes(ctx, axes_color)
 
-#The code for the main application
-app = QtWidgets.QApplication(["Graph Plotter"])# Name of the application
-graphPlotter = Graph(ctx, surface, line_color)# Make the window
-#surface.write_to_png("graph.png")# Save the basic graph that will be shown on the application
+# The code for the main application
+app = QtWidgets.QApplication(["Graph Plotter"])  # Name of the application
+graphPlotter = Graph(ctx, surface, line_color)  # Make the window
 graphPlotter.show()
 sys.exit(app.exec_())

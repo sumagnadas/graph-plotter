@@ -1,8 +1,8 @@
-import cairo, colour
-import modules.geometry
-import modules.gui
+import cairo
+from modules import geometry
 
-def set_axes(ctx,axes_color):
+
+def set_axes(ctx, axes_color):
     """Draws the axes on the canvas of the cairo object
 
     Params:-
@@ -13,14 +13,18 @@ def set_axes(ctx,axes_color):
     ctx.move_to(0.5, 0)
     ctx.line_to(0.5, 1)
     ctx.close_path()
-    ctx.set_source_rgb(axes_color.get_red(), axes_color.get_green(), axes_color.get_blue())
+    ctx.set_source_rgb(axes_color.get_red(),
+                       axes_color.get_green(),
+                       axes_color.get_blue())
     ctx.set_line_width(0.005)
     ctx.stroke()
 
     ctx.move_to(0, 0.5)
     ctx.line_to(1, 0.5)
     ctx.close_path()
-    ctx.set_source_rgb(axes_color.get_red(), axes_color.get_green(), axes_color.get_blue())
+    ctx.set_source_rgb(axes_color.get_red(),
+                       axes_color.get_green(),
+                       axes_color.get_blue())
     ctx.set_line_width(0.005)
     ctx.stroke()
     shape = geometry.Geometry()
@@ -38,10 +42,13 @@ def setup_canvas(colour, WIDTH, HEIGHT, alpha=1):
     ctx.scale(WIDTH, HEIGHT)
 
     pat = cairo.LinearGradient(0.0, 0.0, 0.0, 1.0)
-    pat.add_color_stop_rgba(0, colour.get_red(), colour.get_blue(), colour.get_blue(),alpha)
-    #pat.add_color_stop_rgba(0, 1, 1, 1,0.8)
+    pat.add_color_stop_rgba(0,
+                            colour.get_red(),
+                            colour.get_blue(),
+                            colour.get_blue(),
+                            alpha)
 
     ctx.rectangle(0, 0, 1, 1)
     ctx.set_source(pat)
     ctx.fill()
-    return ctx,surface
+    return ctx, surface
