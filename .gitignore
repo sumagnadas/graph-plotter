@@ -6,4 +6,4 @@ pyvenv.cfg
 *.png
 include/
 *.md
-!graph.png
+!resources/*.png

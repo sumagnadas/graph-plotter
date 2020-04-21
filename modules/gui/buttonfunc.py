@@ -22,7 +22,7 @@ def clear(self):
     self.y_coord1.setText("0")
     self.x_coord2.setText("0")
     self.y_coord2.setText("0")
-    self.image.setPixmap("graph.png")
+    self.image.setPixmap("resources/graph.png")
 
 
 def save(self):

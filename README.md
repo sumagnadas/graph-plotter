@@ -1,9 +1,14 @@
 # graph-plotter
 
-A Graph Plotter written in python and built on Qt framework.
-
+A Graph Plotter written in python and built on Qt framework.\
 The graph is plotted on the left side and the points are given on the right side.\
 You can also save the graph on your computer.
+### GUI
+![graph](resources/GUI.png)
+### After it is saved
+![saved](resources/saved.png)
+The saved photo right now has transparent background but in future, it can be customized
+
 
 ---
 ## Summary

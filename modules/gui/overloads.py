@@ -21,7 +21,7 @@ def paintEvent(self, e):
     graph1 = QtGui.QImage()
 
     if self.draw_call:
-        graph1.load("graph.png")
+        graph1.load("resources/graph.png")
         self.draw_call = False
         pen = QtGui.QPen(Qt.black, 5, Qt.SolidLine)
         p = QtGui.QPainter()

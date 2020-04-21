@@ -26,7 +26,7 @@ class Graph(QtWidgets.QWidget):
         # 'Draw' Button to draw the line using user-given coordinates
         draw = QtWidgets.QPushButton(self.tr("Draw"), clicked=self.draw)
         # 'Reset' Button to clear everything in the input boxes
-        clear = QtWidgets.QPushButton(self.tr("Clear"), clicked=self.clear)
+        clear = QtWidgets.QPushButton(self.tr("Reset"), clicked=self.clear)
         # Save Button for saving the plotted graph with transparent background
         save = QtWidgets.QPushButton(self.tr("Save this Graph"),
                                      clicked=self.save)
@@ -39,7 +39,7 @@ class Graph(QtWidgets.QWidget):
 
         # Layout for the window
         self.makeWindowLayout(buttonBox)
-        self.setImage("graph.png")
+        self.setImage("resources/graph.png")
 
         # Some extra values for the implementation of the GUi
         self.ctx = ctx
