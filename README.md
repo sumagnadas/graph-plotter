@@ -62,4 +62,4 @@ For the versions available, see the [tags on this repository](https://github.com
 This project is licensed under the GPL-2.0 License - see the [LICENSE](LICENSE) file for details
 
 ## Acknowledgments
-Thanks to the peoples on IRC who helped me fix the errors I got while making this. Some of the code is also taken from the examples present on <a href="zetcode.com">ZetCode</a>.
+Thanks to the people on IRC of PySide2 and python who helped me fix the errors I got while making this. Some of the code is also taken from the examples present on <a href="zetcode.com">ZetCode</a>.
