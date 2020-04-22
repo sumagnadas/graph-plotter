@@ -6,7 +6,7 @@ You can also save the graph on your computer.
 ### GUI
 ![graph](resources/GUI.png)
 ### After it is saved
-![saved](resources/saved.png)
+![saved](resources/saved.png) \
 The saved photo right now has transparent background but in future, it can be customized
 
 
