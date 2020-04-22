@@ -16,9 +16,9 @@ class Point(QPoint):
     """Class implementation of a point in graph"""
 
     def __init__(self, x=0, y=0):
-        x *= 15
+        x *= 14.85
         x += 300
-        y *= 15
+        y *= 14.85
         y = -y + 300
         super().__init__(x, y)
 

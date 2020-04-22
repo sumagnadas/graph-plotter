@@ -30,7 +30,7 @@ def paintEvent(self, e):
         p.drawLine(self.p1.x(), self.p1.y(), self.p2.x(), self.p2.y())
         p.end()
         self.image.setPixmap(QtGui.QPixmap().fromImage(graph1))
-        self.graph = graph1
+        self.graph1 = graph1
 
     elif self.save_call:
         self.save_call = False

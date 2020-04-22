@@ -24,7 +24,7 @@ class Graph(QtWidgets.QWidget):
         # Buttons for plotting the graph and clearing the text boxes
 
         # 'Draw' Button to draw the line using user-given coordinates
-        draw = QtWidgets.QPushButton(self.tr("Draw"), clicked=self.draw)
+        self.drawButton = QtWidgets.QPushButton(self.tr("Draw"), clicked=self.draw)
         # 'Reset' Button to clear everything in the input boxes
         clear = QtWidgets.QPushButton(self.tr("Reset"), clicked=self.clear)
         # Save Button for saving the plotted graph with transparent background
@@ -32,13 +32,13 @@ class Graph(QtWidgets.QWidget):
                                      clicked=self.save)
 
         # Widget containing the 'Draw', 'Save this Graph' and 'Reset' button
-        buttonBox = QtWidgets.QDialogButtonBox(Qt.Vertical)
-        buttonBox.addButton(draw, QtWidgets.QDialogButtonBox.ActionRole)
-        buttonBox.addButton(clear, QtWidgets.QDialogButtonBox.ActionRole)
-        buttonBox.addButton(save, QtWidgets.QDialogButtonBox.ActionRole)
+        self.buttonBox = QtWidgets.QDialogButtonBox(Qt.Vertical)
+        self.buttonBox.addButton(self.drawButton, QtWidgets.QDialogButtonBox.ActionRole)
+        self.buttonBox.addButton(clear, QtWidgets.QDialogButtonBox.ActionRole)
+        self.buttonBox.addButton(save, QtWidgets.QDialogButtonBox.ActionRole)
 
         # Layout for the window
-        self.makeWindowLayout(buttonBox)
+        self.makeWindowLayout(self.buttonBox)
         self.setImage("resources/graph.png")
 
         # Some extra values for the implementation of the GUi

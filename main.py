@@ -31,7 +31,8 @@ ctx, surface = setup_canvas(bg_color, WIDTH, HEIGHT, 0)
 set_axes(ctx, axes_color)
 
 # The code for the main application
-app = QtWidgets.QApplication(["Graph Plotter"])  # Name of the application
-graphPlotter = Graph(ctx, surface, line_color)  # Make the window
-graphPlotter.show()
-sys.exit(app.exec_())
+if __name__ == "__main__":
+    app = QtWidgets.QApplication(["Graph Plotter"])  # Name of the application
+    graphPlotter = Graph(ctx, surface, line_color)  # Make the window
+    graphPlotter.show()
+    sys.exit(app.exec_())
