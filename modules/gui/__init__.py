@@ -9,6 +9,7 @@ class Graph(QtWidgets.QWidget):
     def __init__(self, ctx, surface, line_color):
         super().__init__()
 
+        self.fileDir = ''
         self.save_call = False
         self.draw_call = False
         self.image = QtWidgets.QLabel()  # Image container for the graph
@@ -24,17 +25,21 @@ class Graph(QtWidgets.QWidget):
         # Buttons for plotting the graph and clearing the text boxes
 
         # 'Draw' Button to draw the line using user-given coordinates
-        self.drawButton = QtWidgets.QPushButton(self.tr("Draw"), clicked=self.draw)
+        self.drawButton = QtWidgets.QPushButton(self.tr("Draw"),
+                                                clicked=self.draw)
         # 'Reset' Button to clear everything in the input boxes
-        clear = QtWidgets.QPushButton(self.tr("Reset"), clicked=self.clear)
+        self.clearButton = QtWidgets.QPushButton(self.tr("Reset"),
+                                                 clicked=self.clear)
         # Save Button for saving the plotted graph with transparent background
         save = QtWidgets.QPushButton(self.tr("Save this Graph"),
                                      clicked=self.save)
 
         # Widget containing the 'Draw', 'Save this Graph' and 'Reset' button
         self.buttonBox = QtWidgets.QDialogButtonBox(Qt.Vertical)
-        self.buttonBox.addButton(self.drawButton, QtWidgets.QDialogButtonBox.ActionRole)
-        self.buttonBox.addButton(clear, QtWidgets.QDialogButtonBox.ActionRole)
+        self.buttonBox.addButton(self.drawButton,
+                                 QtWidgets.QDialogButtonBox.ActionRole)
+        self.buttonBox.addButton(self.clearButton,
+                                 QtWidgets.QDialogButtonBox.ActionRole)
         self.buttonBox.addButton(save, QtWidgets.QDialogButtonBox.ActionRole)
 
         # Layout for the window
@@ -46,6 +51,6 @@ class Graph(QtWidgets.QWidget):
         self.surface = surface
         self.line_color = line_color
 
-    from .buttonfunc import clear, draw, save, check
+    from .buttonfunc import clear, draw, save, check, setSaveFiledir
     from .layout import makeWindowLayout, makeGraphLayout, setImage
     from .overloads import paintEvent

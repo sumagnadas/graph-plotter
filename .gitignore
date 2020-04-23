@@ -5,6 +5,7 @@ lib/
 pyvenv.cfg
 *.png
 include/
-*.md
+README_template.md
 !resources/*.png
 Dockerfile
+.flake8

@@ -35,3 +35,6 @@ def check(self):
     self.y_coord1.setzero()
     self.x_coord2.setzero()
     self.y_coord2.setzero()
+
+def setSaveFiledir(self,filedir):
+    self.fileDir = filedir
