@@ -24,7 +24,7 @@ The saved photo right now has transparent background but in future, it can be cu
 
 You need to have the following dependencies installed using apt
 
-- ``libcairo2-dev`
+- ``libcairo2-dev``
 
 You can also use requirements.txt to install all the dependencies.
 
