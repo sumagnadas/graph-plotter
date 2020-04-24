@@ -22,11 +22,9 @@ The saved photo right now has transparent background but in future, it can be cu
 
 ### Prerequisites
 
-You need to have the following dependencies installed using pip3
+You need to have the following dependencies installed using apt
 
-- ``colour (0.1.5)``
-- ``pycairo (1.19.1)``
-- ``PySide2 (5.14.2)``
+- ``libcairo2-dev`
 
 You can also use requirements.txt to install all the dependencies.
 
