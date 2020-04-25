@@ -6,7 +6,9 @@ from modules.gui import Graph, QtWidgets
 import sys
 
 # Some necessary variables
-WIDTH, HEIGHT = 600, 600  # Width and height of the graph
+app = QtWidgets.QApplication(["Graph Plotter"])  # Name of the application
+rect = app.primaryScreen().availableGeometry()
+WIDTH, HEIGHT = int(rect.width()*(43.92/100)), int(rect.height()*(80.97/100)) # Width and height of the graph
 
 # Color objects for having customizable graph colors
 bg_color = Color("white")
@@ -29,10 +31,10 @@ p4.set_coord(100, -100)
 # pycairo objects for making the graph
 ctx, surface = setup_canvas(bg_color, WIDTH, HEIGHT, 0)
 set_axes(ctx, axes_color)
+surface.write_to_png("resources/graph.png")
 
 # The code for the main application
 if __name__ == "__main__":
-    app = QtWidgets.QApplication(["Graph Plotter"])  # Name of the application
     graphPlotter = Graph(ctx, surface, line_color)  # Make the window
     graphPlotter.show()
     sys.exit(app.exec_())

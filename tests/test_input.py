@@ -5,7 +5,6 @@ from PySide2.QtCore import Qt
 from time import sleep
 
 
-
 def test_coordBox(qtbot):
     window = Graph(ctx, surface, line_color)
     window.show()
@@ -26,6 +25,7 @@ def test_coordBox(qtbot):
     assert window.x_coord2.text() == '0', str
     assert window.y_coord2.text() == '0', str
 
+
 def test_intInput(qtbot):
     window = Graph(ctx, surface, line_color)
     window.show()
@@ -40,7 +40,7 @@ def test_intInput(qtbot):
 
     qtbot.mouseClick(window.buttonBox.buttons()[0], Qt.LeftButton)
 
-    assert not 'A' in window.x_coord1.text(), str
-    assert not 'A' in window.y_coord1.text(), str
-    assert not 'A' in window.x_coord2.text(), str
-    assert not 'A' in window.y_coord2.text(), str
+    assert 'A' not in window.x_coord1.text(), str
+    assert 'A' not in window.y_coord1.text(), str
+    assert 'A' not in window.x_coord2.text(), str
+    assert 'A' not in window.y_coord2.text(), str

@@ -1,11 +1,10 @@
 __pycache__/
-.idea/
-bin/
-lib/
-pyvenv.cfg
 *.png
 include/
 README_template.md
 !resources/*.png
 Dockerfile
 .flake8
+.github
+.pytest_cache/
+configure.py

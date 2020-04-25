@@ -4,12 +4,12 @@ from PySide2.QtCore import QPoint
 class point(object):
     """Class implementation of a point in graph"""
     def __init__(self, x=0, y=0):
-        self.x = x/200
-        self.y = y/200
+        self.x = x / 200
+        self.y = y / 200
 
     def set_coord(self, x, y):
-        self.x = x/200
-        self.y = y/200
+        self.x = x / 200
+        self.y = y / 200
 
 
 class Point(QPoint):
@@ -80,21 +80,21 @@ class Geometry(object):
         """
 
         for i in range(0, pointNum):
-            self.draw_line(ctx, p[i-1], p[i], colour, 0.005)
+            self.draw_line(ctx, p[i - 1], p[i], colour, 0.005)
 
     def draw_grid(self, ctx, colour):
         for i in range(-100, 100, 10):
             for j in range(-100, 100, 10):
                 p1 = point(i, j)
-                p2 = point(i+10, j)
-                p3 = point(i+10, j+10)
-                p4 = point(i, j+10)
+                p2 = point(i + 10, j)
+                p3 = point(i + 10, j + 10)
+                p4 = point(i, j + 10)
                 self.draw_quad(ctx, p1, p2, p3, p4, colour, 0.001)
 
         for i in range(-100, 100, 5):
             for j in range(-100, 100, 5):
                 p1 = point(i, j)
-                p2 = point(i+10, j)
-                p3 = point(i+10, j+10)
-                p4 = point(i, j+10)
+                p2 = point(i + 10, j)
+                p3 = point(i + 10, j + 10)
+                p4 = point(i, j + 10)
                 self.draw_quad(ctx, p1, p2, p3, p4, colour, 0.001)

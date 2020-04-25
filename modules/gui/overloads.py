@@ -3,6 +3,7 @@ from .layout import QtGui, Qt, QtWidgets
 
 filename = ''
 
+
 class NumInput(QtWidgets.QLineEdit):
     """Class which defines the input boxes for the coordinates"""
     def __init__(self):
@@ -37,5 +38,5 @@ def paintEvent(self, e):
         self.save_call = False
         currentDT = datetime.datetime.now()
         currentTime = currentDT.strftime("%H:%M:%S")
-        filename = self.fileDir + "graph-"+currentTime+".png"
+        filename = self.fileDir + "graph-" + currentTime + ".png"
         self.graph1.save(filename, "PNG")
