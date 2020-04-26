@@ -8,7 +8,8 @@ import sys
 # Some necessary variables
 app = QtWidgets.QApplication(["Graph Plotter"])  # Name of the application
 rect = app.primaryScreen().availableGeometry()
-WIDTH, HEIGHT = int(rect.width()*(43.92/100)), int(rect.height()*(80.97/100)) # Width and height of the graph
+WIDTH = int(rect.width() * (43.92 / 100))
+HEIGHT = int(rect.height() * (80.97 / 100))  # Width and height of the graph
 
 # Color objects for having customizable graph colors
 bg_color = Color("white")

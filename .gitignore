@@ -7,4 +7,3 @@ Dockerfile
 .flake8
 .github
 .pytest_cache/
-configure.py
