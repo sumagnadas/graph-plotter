@@ -1,6 +1,6 @@
 from PySide2 import QtWidgets, QtGui
 from PySide2.QtCore import Qt
-from .input import NumInput
+from .input import NumInput, ShapeList, PointInput
 import os.path as pt
 from modules import geometry
 import datetime
@@ -17,13 +17,18 @@ class Graph(QtWidgets.QWidget):
         self.draw_call = False
         self.image = QtWidgets.QLabel()  # Image container for the graph
 
+        self.points = {}
         # Input boxes for the first point of the line
+        self.points[1] = []
         self.x_coord1 = NumInput()
         self.y_coord1 = NumInput()
+        self.points[1].extend([self.x_coord1, self.y_coord1])
 
         # Input boxes for the second point of the line
+        self.points[2] = []
         self.x_coord2 = NumInput()  # input boxes for the coordinates
         self.y_coord2 = NumInput()  # input boxes for the coordinates
+        self.points[2].extend([self.x_coord2, self.y_coord2])
 
         # Buttons for plotting the graph and clearing the text boxes
 
@@ -54,23 +59,45 @@ class Graph(QtWidgets.QWidget):
         self.surface = surface
         self.line_color = line_color
 
-    def makeGraphLayout(self, str, x, y):
+    def makeInputLayout(self):
+        self.inputLayout = QtWidgets.QFormLayout()
+        self.dropList = ShapeList()
+        self.dropList.activated.connect(self.shape)
+        self.inputLayout.addRow(self.dropList)
+
+    def makecoordLayout(self, str, x, y):
         '''Make the layout of the window'''
+
         inputLayout = QtWidgets.QFormLayout()
         inputLayout.setHorizontalSpacing(10)
+        #inputLayout.addRow(dropList)
         inputLayout.addRow(QtWidgets.QLabel(str))
         inputLayout.addRow(QtWidgets.QLabel("X:"), x)
         inputLayout.addRow(QtWidgets.QLabel("Y:"), y)
-        self.windowLayout.addLayout(inputLayout)
+        self.inputLayout.addRow(inputLayout)
+        return self.inputLayout
 
     def makeWindowLayout(self, buttonBox):
         '''Make the layout of the window'''
 
+        self.pointinput = QtWidgets.QFormLayout()
+        input1 = PointInput('Point1', self.points[1][0], self.points[1][1])
+        input2 = PointInput("Point2", self.points[2][0], self.points[2][1])
+        self.inputLayout1 = QtWidgets.QStackedLayout()
+        self.widget = QtWidgets.QWidget()
         layout = QtWidgets.QBoxLayout(QtWidgets.QBoxLayout.LeftToRight)
         self.windowLayout = layout
         self.windowLayout.addWidget(self.image)
-        self.makeGraphLayout("Point1", x=self.x_coord1, y=self.y_coord1)
-        self.makeGraphLayout("Point2", x=self.x_coord2, y=self.y_coord2)
+        self.makeInputLayout()
+        #self.pointinput.addRow(self.makecoordLayout("Point1", self.points[1][0], self.points[1][1]))
+        #self.pointinput.addRow(self.makecoordLayout("Point2", self.points[2][0], self.points[2][1]))
+        self.pointinput.addRow(self.dropList)
+        self.pointinput.addRow(input1)
+        self.pointinput.addRow(input2)
+        self.widget.setLayout(self.pointinput)
+        #self.widget.show()
+        self.inputLayout1.insertWidget(0, self.widget)
+        self.windowLayout.addLayout(self.inputLayout1)
         self.windowLayout.addWidget(buttonBox)
         self.setLayout(self.windowLayout)
 
@@ -81,7 +108,7 @@ class Graph(QtWidgets.QWidget):
         self.image.setPixmap(QtGui.QPixmap().fromImage(self.graph_image))
 
     def draw(self):
-        '''Draw a line using the coordinates of the points
+        '''Draw a line usself.ing the coordinates of the points
            provided by the user'''
 
         self.check()
@@ -126,7 +153,14 @@ class Graph(QtWidgets.QWidget):
             p = QtGui.QPainter()
             p.begin(graph1)
             p.setPen(pen)
-            p.drawLine(self.p1.x(), self.p1.y(), self.p2.x(), self.p2.y())
+            if self.dropList.currentText() == 'Line':
+                p.drawLine(self.p1.x(), self.p1.y(), self.p2.x(), self.p2.y())
+            elif self.dropList.currentText() == 'Triangle':
+                self.p3 = geometry.Point(int(self.points[3][0].text()),
+                                         int(self.points[3][1].text()))
+                p.drawLine(self.p1.x(), self.p1.y(), self.p2.x(), self.p2.y())
+                p.drawLine(self.p2.x(), self.p2.y(), self.p3.x(), self.p3.y())
+                p.drawLine(self.p3.x(), self.p3.y(), self.p1.x(), self.p1.y())
             p.end()
             self.image.setPixmap(QtGui.QPixmap().fromImage(graph1))
             self.graph1 = graph1
@@ -137,3 +171,25 @@ class Graph(QtWidgets.QWidget):
             currentTime = currentDT.strftime("%H:%M:%S")
             filename = self.fileDir + "graph-" + currentTime + ".png"
             self.graph1.save(filename, "PNG")
+
+    def shape(self,i):
+        if i == 0:
+            print(self.inputLayout.rowCount())
+            #self.inputLayout.removeRow(self.inputLayout.rowCount()-1)
+            #self.inputLayout.removeRow(self.inputLayout.rowCount()-2)
+            #self.inputLayout.removeRow(self.inputLayout.rowCount()-3)
+            #self.inputLayout1.insertWidget(2 ,self.widget)
+            #self.inputLayout1.setCurrentIndex(0)
+
+        if i == 1:
+            self.x1 = NumInput()
+            self.y1 = NumInput()
+            if 3 not in self.points.keys():
+                self.points[3] = [self.x1, self.y1]
+                self.makecoordLayout("Point3",self.points[3][0], self.points[3][1])
+                self.input = PointInput('Point3', self.points[3][0], self.points[3][1])
+                self.input.insertRow(self.widget)
+
+            self.inputLayout1.insertWidget(1, self.input)
+            #self.windowLayout.addLayout(self.inputLayout)
+            self.inputLayout1.setCurrentIndex(1)
