@@ -12,18 +12,16 @@ def test_coordBox(qtbot):
     str = ('Empty '
            'input box should be taken as zero')
 
-    window.x_coord1.setText('')
-    window.y_coord1.setText('')
-    window.x_coord2.setText('')
-    window.y_coord2.setText('')
+    for i in window.points:
+        qtbot.keyClicks(i[0], '')
+        qtbot.keyClicks(i[1], '')
     qtbot.waitForWindowShown(window)
 
     qtbot.mouseClick(window.buttonBox.buttons()[0], Qt.LeftButton)
 
-    assert window.x_coord1.text() == '0', str
-    assert window.y_coord1.text() == '0', str
-    assert window.x_coord2.text() == '0', str
-    assert window.y_coord2.text() == '0', str
+    for i in window.points:
+        assert i[0].text() == 0, str
+        assert i[1].text() == 0, str
 
 
 def test_intInput(qtbot):
@@ -32,15 +30,13 @@ def test_intInput(qtbot):
     qtbot.addWidget(window)
     str = 'Coordinates input box is not supposed take in letter input'
 
-    qtbot.keyClicks(window.x_coord1, 'A')
-    qtbot.keyClicks(window.y_coord1, 'A')
-    qtbot.keyClicks(window.x_coord2, 'A')
-    qtbot.keyClicks(window.y_coord2, 'A')
+    for i in window.points:
+        qtbot.keyClicks(i[0], 'A')
+        qtbot.keyClicks(i[1], 'A')
     qtbot.waitForWindowShown(window)
 
     qtbot.mouseClick(window.buttonBox.buttons()[0], Qt.LeftButton)
 
-    assert 'A' not in window.x_coord1.text(), str
-    assert 'A' not in window.y_coord1.text(), str
-    assert 'A' not in window.x_coord2.text(), str
-    assert 'A' not in window.y_coord2.text(), str
+    for i in window.points:
+        assert 'A' not in i[0].text(), str
+        assert 'A' not in i[1].text(), str

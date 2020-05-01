@@ -6,6 +6,16 @@ from modules import geometry
 import datetime
 
 
+shapes = {
+    3: 'Triangle',
+    4: 'Quadrilateral',
+    5: 'Pentagon',
+    6: 'Hexagon',
+    7: 'Septagon',
+    8: 'Octagon',
+    9: 'Enneagon',
+    10: 'Decagon'
+}
 class Graph(QtWidgets.QWidget):
     """Class which defines the window of the application"""
 
@@ -15,28 +25,29 @@ class Graph(QtWidgets.QWidget):
         self.fileDir = ''
         self.save_call = False
         self.draw_call = False
+        self.pointNum = 3
         self.image = QtWidgets.QLabel()  # Image container for the graph
 
-        self.points = {}
+        self.points = []
         # Input boxes for the first point of the line
-        self.points[1] = []
+        self.points.append([])
         self.x_coord1 = NumInput()
         self.y_coord1 = NumInput()
-        self.points[1].extend([self.x_coord1, self.y_coord1])
+        self.points[0].extend([self.x_coord1, self.y_coord1])
 
         # Input boxes for the second point of the line
-        self.points[2] = []
+        self.points.append([])
         self.x_coord2 = NumInput()  # input boxes for the coordinates
         self.y_coord2 = NumInput()  # input boxes for the coordinates
-        self.points[2].extend([self.x_coord2, self.y_coord2])
+        self.points[1].extend([self.x_coord2, self.y_coord2])
 
         # Buttons for plotting the graph and clearing the text boxes
 
         # 'Draw' Button to draw the line using user-given coordinates
-        self.drawButton = QtWidgets.QPushButton(self.tr("Draw"),
+        drawButton = QtWidgets.QPushButton(self.tr("Draw"),
                                                 clicked=self.draw)
         # 'Reset' Button to clear everything in the input boxes
-        self.clearButton = QtWidgets.QPushButton(self.tr("Reset"),
+        clearButton = QtWidgets.QPushButton(self.tr("Reset"),
                                                  clicked=self.clear)
         # Save Button for saving the plotted graph with transparent background
         save = QtWidgets.QPushButton(self.tr("Save this Graph"),
@@ -44,9 +55,9 @@ class Graph(QtWidgets.QWidget):
 
         # Widget containing the 'Draw', 'Save this Graph' and 'Reset' button
         self.buttonBox = QtWidgets.QDialogButtonBox(Qt.Vertical)
-        self.buttonBox.addButton(self.drawButton,
+        self.buttonBox.addButton(drawButton,
                                  QtWidgets.QDialogButtonBox.ActionRole)
-        self.buttonBox.addButton(self.clearButton,
+        self.buttonBox.addButton(clearButton,
                                  QtWidgets.QDialogButtonBox.ActionRole)
         self.buttonBox.addButton(save, QtWidgets.QDialogButtonBox.ActionRole)
 
@@ -61,43 +72,34 @@ class Graph(QtWidgets.QWidget):
 
     def makeInputLayout(self):
         self.inputLayout = QtWidgets.QFormLayout()
-        self.dropList = ShapeList()
-        self.dropList.activated.connect(self.shape)
-        self.inputLayout.addRow(self.dropList)
-
-    def makecoordLayout(self, str, x, y):
-        '''Make the layout of the window'''
-
-        inputLayout = QtWidgets.QFormLayout()
-        inputLayout.setHorizontalSpacing(10)
-        #inputLayout.addRow(dropList)
-        inputLayout.addRow(QtWidgets.QLabel(str))
-        inputLayout.addRow(QtWidgets.QLabel("X:"), x)
-        inputLayout.addRow(QtWidgets.QLabel("Y:"), y)
-        self.inputLayout.addRow(inputLayout)
-        return self.inputLayout
+        self.coordLayout = QtWidgets.QFormLayout()
+        self.scrollArea = QtWidgets.QScrollArea()
+        self.widget = QtWidgets.QWidget()
+        self.str = QtWidgets.QLabel('Geometric Figure:')
+        self.shapeName = QtWidgets.QLabel('Line')
+        self.widget.setLayout(self.coordLayout)
+        self.inputLayout.addRow(self.str, self.shapeName)
+        self.scrollArea.setWidget(self.widget)
+        self.scrollArea.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
+        self.scrollArea.setWidgetResizable(True)
+        self.inputLayout.addRow(self.scrollArea)
 
     def makeWindowLayout(self, buttonBox):
         '''Make the layout of the window'''
 
         self.pointinput = QtWidgets.QFormLayout()
-        input1 = PointInput('Point1', self.points[1][0], self.points[1][1])
-        input2 = PointInput("Point2", self.points[2][0], self.points[2][1])
-        self.inputLayout1 = QtWidgets.QStackedLayout()
-        self.widget = QtWidgets.QWidget()
+        input1 = PointInput('Point1', self.points[0][0], self.points[0][1])
+        input2 = PointInput("Point2", self.points[1][0], self.points[1][1])
         layout = QtWidgets.QBoxLayout(QtWidgets.QBoxLayout.LeftToRight)
+        button = QtWidgets.QPushButton(self.tr('+'), clicked=self.addPoint)
+        button.setToolTip('Add a new point for drawing shapes')
         self.windowLayout = layout
         self.windowLayout.addWidget(self.image)
         self.makeInputLayout()
-        #self.pointinput.addRow(self.makecoordLayout("Point1", self.points[1][0], self.points[1][1]))
-        #self.pointinput.addRow(self.makecoordLayout("Point2", self.points[2][0], self.points[2][1]))
-        self.pointinput.addRow(self.dropList)
-        self.pointinput.addRow(input1)
-        self.pointinput.addRow(input2)
-        self.widget.setLayout(self.pointinput)
-        #self.widget.show()
-        self.inputLayout1.insertWidget(0, self.widget)
-        self.windowLayout.addLayout(self.inputLayout1)
+        self.coordLayout.addRow(button)
+        self.coordLayout.addRow(input1)
+        self.coordLayout.addRow(input2)
+        self.windowLayout.addLayout(self.inputLayout)
         self.windowLayout.addWidget(buttonBox)
         self.setLayout(self.windowLayout)
 
@@ -124,10 +126,9 @@ class Graph(QtWidgets.QWidget):
         Resets the input boxes and clear the line(s) on the grid
         When the user presses 'Reset' button'''
 
-        self.x_coord1.setText("0")
-        self.y_coord1.setText("0")
-        self.x_coord2.setText("0")
-        self.y_coord2.setText("0")
+        for i in self.points:
+            i[0].setText('0')
+            i[1].setText('0')
         self.image.setPixmap("resources/graph.png")
 
     def save(self):
@@ -135,17 +136,15 @@ class Graph(QtWidgets.QWidget):
         self.image.update()
 
     def check(self):
-        self.x_coord1.setzero()
-        self.y_coord1.setzero()
-        self.x_coord2.setzero()
-        self.y_coord2.setzero()
+        for i in self.points:
+            i[0].setzero()
+            i[1].setzero()
 
     def setSaveFiledir(self, filedir):
         self.fileDir = filedir
 
     def paintEvent(self, e):
         graph1 = QtGui.QImage()
-
         if self.draw_call:
             graph1.load("resources/graph.png")
             self.draw_call = False
@@ -156,15 +155,14 @@ class Graph(QtWidgets.QWidget):
             if self.dropList.currentText() == 'Line':
                 p.drawLine(self.p1.x(), self.p1.y(), self.p2.x(), self.p2.y())
             elif self.dropList.currentText() == 'Triangle':
-                self.p3 = geometry.Point(int(self.points[3][0].text()),
-                                         int(self.points[3][1].text()))
+                self.p3 = geometry.Point(int(self.points[2][0].text()),
+                                         int(self.points[2][1].text()))
                 p.drawLine(self.p1.x(), self.p1.y(), self.p2.x(), self.p2.y())
                 p.drawLine(self.p2.x(), self.p2.y(), self.p3.x(), self.p3.y())
                 p.drawLine(self.p3.x(), self.p3.y(), self.p1.x(), self.p1.y())
             p.end()
             self.image.setPixmap(QtGui.QPixmap().fromImage(graph1))
             self.graph1 = graph1
-
         elif self.save_call:
             self.save_call = False
             currentDT = datetime.datetime.now()
@@ -172,24 +170,14 @@ class Graph(QtWidgets.QWidget):
             filename = self.fileDir + "graph-" + currentTime + ".png"
             self.graph1.save(filename, "PNG")
 
-    def shape(self,i):
-        if i == 0:
-            print(self.inputLayout.rowCount())
-            #self.inputLayout.removeRow(self.inputLayout.rowCount()-1)
-            #self.inputLayout.removeRow(self.inputLayout.rowCount()-2)
-            #self.inputLayout.removeRow(self.inputLayout.rowCount()-3)
-            #self.inputLayout1.insertWidget(2 ,self.widget)
-            #self.inputLayout1.setCurrentIndex(0)
+    def addPoint(self):
+        x1 = NumInput()
+        y1 = NumInput()
 
-        if i == 1:
-            self.x1 = NumInput()
-            self.y1 = NumInput()
-            if 3 not in self.points.keys():
-                self.points[3] = [self.x1, self.y1]
-                self.makecoordLayout("Point3",self.points[3][0], self.points[3][1])
-                self.input = PointInput('Point3', self.points[3][0], self.points[3][1])
-                self.input.insertRow(self.widget)
-
-            self.inputLayout1.insertWidget(1, self.input)
-            #self.windowLayout.addLayout(self.inputLayout)
-            self.inputLayout1.setCurrentIndex(1)
+        self.points.append([])
+        index = len(self.points) - 1
+        self.points[index].extend([x1, y1])
+        self.input = PointInput('Point'+str(self.pointNum), self.points[index][0], self.points[index][1])
+        self.coordLayout.insertRow(self.coordLayout.rowCount() - 1, self.input)
+        self.pointNum += 1
+        self.shapeName.setText(shapes.get(index + 1, 'Undefined shape with {} number of sides'.format(index + 1)))
