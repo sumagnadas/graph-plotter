@@ -1,11 +1,10 @@
-from PySide2 import QtWidgets, QtGui
-from PySide2.QtCore import Qt
+from PySide2 import QtWidgets, QtGui, QtCore
 from .input import NumInput, ShapeList, PointInput
 from .info import ExtraInfo
 import os.path as pt
 from modules import geometry
 import datetime
-from more_itertools import pairwise, take
+import math
 
 
 shapes = {
@@ -57,7 +56,7 @@ class Graph(QtWidgets.QWidget):
                                      clicked=self.save)
 
         # Widget containing the 'Draw', 'Save this Graph' and 'Reset' button
-        self.buttonBox = QtWidgets.QDialogButtonBox(Qt.Vertical)
+        self.buttonBox = QtWidgets.QDialogButtonBox(QtCore.Qt.Vertical)
         self.buttonBox.addButton(drawButton,
                                  QtWidgets.QDialogButtonBox.ActionRole)
         self.buttonBox.addButton(clearButton,
@@ -88,8 +87,8 @@ class Graph(QtWidgets.QWidget):
         self.inputLayout.addRow(self.extraInfo, QtWidgets.QWidget())
         self.inputLayout.addRow(self.shapeInfo)
         self.scrollArea.setWidget(self.widget)
-        self.scrollArea.setVerticalScrollBarPolicy(Qt.ScrollBarAsNeeded)
-        self.scrollArea.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.scrollArea.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAsNeeded)
+        self.scrollArea.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
         self.scrollArea.setWidgetResizable(True)
         self.inputLayout.addRow(self.scrollArea)
 
@@ -157,7 +156,7 @@ class Graph(QtWidgets.QWidget):
         if self.draw_call:
             graph1.load("resources/graph.png")
             self.draw_call = False
-            pen = QtGui.QPen(Qt.black, 5, Qt.SolidLine)
+            pen = QtGui.QPen(QtCore.Qt.black, 5, QtCore.Qt.SolidLine)
             p = QtGui.QPainter()
             p.begin(graph1)
             p.setPen(pen)
@@ -171,6 +170,7 @@ class Graph(QtWidgets.QWidget):
                 p2 = geometry.Point(int(self.points[0][0].text()), int(self.points[0][1].text()))
                 p.drawLine(p1.x(), p1.y(), p2.x(), p2.y())
             p.end()
+            self.shapeInfo.updateInfo(self.points, self.shapeName)
             self.image.setPixmap(QtGui.QPixmap().fromImage(graph1))
             self.graph1 = graph1
 
@@ -190,6 +190,8 @@ class Graph(QtWidgets.QWidget):
         self.points[index].extend([x1, y1])
         self.input = PointInput('Point'+str(self.pointNum), self.points[index][0], self.points[index][1])
         self.coordLayout.insertRow(self.coordLayout.rowCount(), self.input)
+        self.shapeInfo.str1.setText('Length of the sides:')
+        self.shapeInfo.distance.setStyleSheet('background:solid #F2F3f4')
         self.pointNum += 1
         self.shapeName.setText(shapes.get(index + 1, 'Undefined shape with {} number of sides'.format(index + 1)))
 
@@ -197,8 +199,64 @@ class Graph(QtWidgets.QWidget):
         if  not self.pressedOnce:
             self.extraInfo.setText(self.tr('Extra Info \N{Black Up-Pointing Triangle}'))
             self.shapeInfo.show()
+            self.extraInfo.setStyleSheet('border: transparent')
             self.pressedOnce = True
         else:
             self.shapeInfo.hide()
             self.pressedOnce = False
+            self.extraInfo.setStyleSheet('background:solid #F2F3f4')
             self.extraInfo.setText(self.tr('Extra Info \N{Black Down-Pointing Triangle}'))
+
+    def dist(self):
+        x0 = int(self.points[0][0].text())
+        y0 = int(self.points[0][1].text())
+        x3 = int(self.points[1][0].text())
+        y3 = int(self.points[1][1].text())
+        x1 = x0 if x0 >= x3 else x3
+        y1 = y0 if y0 >= y3 else y3
+        x2 = x0 if x0 < x3 else x3
+        y2 = y0 if y0 < y3 else y3
+        if self.shapeName.text() == 'Line':
+            dist = math.sqrt(((x1 - x2) ** 2) + ((y1 - y2) ** 2))
+        else:
+            dist = 'N/A'
+        return dist if isinstance(dist, str) else f'{dist:.2f}'
+
+    def sumAngle(self):
+        sides = len(self.points)
+        sumOfAngles = (sides - 2) * 180
+        return str(sumOfAngles)
+
+    def sides(self):
+        if self.shapeName.text() == 'Line':
+            sides = str(1)
+        else:
+            sides = str(len(self.points))
+        return sides
+
+    def shapeType(self):
+        dist = []
+        try:
+            for i in range(0, len(self.points)):
+                x0 = int(self.points[i][0].text())
+                y0 = int(self.points[i][1].text())
+                x3 = int(self.points[i+1][0].text())
+                y3 = int(self.points[i+1][1].text())
+                x1 = x0 if x0 >= x3 else x3
+                y1 = y0 if y0 >= y3 else y3
+                x2 = x0 if x0 < x3 else x3
+                y2 = y0 if y0 < y3 else y3
+                distance = math.sqrt(((x1 - x2) ** 2) + ((y1 - y2) ** 2))
+                dist.append(distance)
+        except IndexError:
+            x0 = int(self.points[-1][0].text())
+            y0 = int(self.points[-1][1].text())
+            x3 = int(self.points[0][0].text())
+            y3 = int(self.points[0][1].text())
+            x1 = x0 if x0 >= x3 else x3
+            y1 = y0 if y0 >= y3 else y3
+            x2 = x0 if x0 < x3 else x3
+            y2 = y0 if y0 < y3 else y3
+            distance = math.sqrt(((x1 - x2) ** 2) + ((y1 - y2) ** 2))
+            dist.append(distance)
+        return 'Regular' if len(set(dist)) == 1 else 'Irregular'
