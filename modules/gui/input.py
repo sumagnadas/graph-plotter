@@ -13,18 +13,22 @@ class NumInput(QtWidgets.QLineEdit):
         onlyInt = QtGui.QIntValidator(-300, 300)
         self.setValidator(onlyInt)
         self.setText("0")
-        self.setSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
+        self.setSizePolicy(QtWidgets.QSizePolicy.Minimum,
+                           QtWidgets.QSizePolicy.Minimum)
 
     def setzero(self):
         if self.text() == '':
             self.setText('0')
+
 
 class ShapeList(QtWidgets.QComboBox):
 
     def __init__(self):
         super().__init__()
         self.addItems(['Line', 'Triangle', 'Quadrilateral', 'Polygon'])
-        self.setSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
+        self.setSizePolicy(QtWidgets.QSizePolicy.Minimum,
+                           QtWidgets.QSizePolicy.Minimum)
+
 
 class PointInput(QtWidgets.QWidget):
     def __init__(self, str, x, y):

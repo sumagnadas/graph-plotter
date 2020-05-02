@@ -6,7 +6,6 @@ from modules import geometry
 import datetime
 import math
 
-
 shapes = {
     3: 'Triangle',
     4: 'Quadrilateral',
@@ -17,6 +16,8 @@ shapes = {
     9: 'Enneagon',
     10: 'Decagon'
 }
+
+
 class Graph(QtWidgets.QWidget):
     """Class which defines the window of the application"""
 
@@ -47,10 +48,10 @@ class Graph(QtWidgets.QWidget):
 
         # 'Draw' Button to draw the line using user-given coordinates
         drawButton = QtWidgets.QPushButton(self.tr("Draw"),
-                                                clicked=self.draw)
+                                           clicked=self.draw)
         # 'Reset' Button to clear everything in the input boxes
         clearButton = QtWidgets.QPushButton(self.tr("Reset"),
-                                                 clicked=self.clear)
+                                            clicked=self.clear)
         # Save Button for saving the plotted graph with transparent background
         save = QtWidgets.QPushButton(self.tr("Save this Graph"),
                                      clicked=self.save)
@@ -73,22 +74,26 @@ class Graph(QtWidgets.QWidget):
         self.line_color = line_color
 
     def makeInputLayout(self):
+        text = 'Extra Info \N{Black Down-Pointing Triangle}'
         self.inputLayout = QtWidgets.QFormLayout()
         self.coordLayout = QtWidgets.QFormLayout()
         self.scrollArea = QtWidgets.QScrollArea()
         self.widget = QtWidgets.QWidget()
         self.str = QtWidgets.QLabel('Geometric Figure:')
         self.shapeName = QtWidgets.QLabel('Line')
-        self.extraInfo = QtWidgets.QPushButton(self.tr('Extra Info \N{Black Down-Pointing Triangle}'), clicked=self.info)
-        self.extraInfo.setToolTip('Show extra information for the line or shape')
+        self.extraInfo = QtWidgets.QPushButton(text, clicked=self.info)
+        self.extraInfo.setToolTip(('Show extra information '
+                                   'for the line or shape'))
         self.shapeInfo = ExtraInfo()
         self.widget.setLayout(self.coordLayout)
         self.inputLayout.addRow(self.str, self.shapeName)
         self.inputLayout.addRow(self.extraInfo, QtWidgets.QWidget())
         self.inputLayout.addRow(self.shapeInfo)
         self.scrollArea.setWidget(self.widget)
-        self.scrollArea.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAsNeeded)
-        self.scrollArea.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+        self.scrollArea.setVerticalScrollBarPolicy(
+                                    QtCore.Qt.ScrollBarAsNeeded)
+        self.scrollArea.setHorizontalScrollBarPolicy(
+                                    QtCore.Qt.ScrollBarAlwaysOff)
         self.scrollArea.setWidgetResizable(True)
         self.inputLayout.addRow(self.scrollArea)
 
@@ -162,15 +167,21 @@ class Graph(QtWidgets.QWidget):
             p.setPen(pen)
             try:
                 for i in range(0, len(self.points)):
-                    p1 = geometry.Point(int(self.points[i][0].text()), int(self.points[i][1].text()))
-                    p2 = geometry.Point(int(self.points[i+1][0].text()), int(self.points[i+1][1].text()))
+                    p1 = geometry.Point(int(self.points[i][0].text()),
+                                        int(self.points[i][1].text()))
+                    p2 = geometry.Point(int(self.points[i + 1][0].text()),
+                                        int(self.points[i + 1][1].text()))
                     p.drawLine(p1.x(), p1.y(), p2.x(), p2.y())
             except IndexError:
-                p1 = geometry.Point(int(self.points[-1][0].text()), int(self.points[-1][1].text()))
-                p2 = geometry.Point(int(self.points[0][0].text()), int(self.points[0][1].text()))
+                p1 = geometry.Point(int(self.points[-1][0].text()),
+                                    int(self.points[-1][1].text()))
+                p2 = geometry.Point(int(self.points[0][0].text()),
+                                    int(self.points[0][1].text()))
                 p.drawLine(p1.x(), p1.y(), p2.x(), p2.y())
             p.end()
-            self.shapeInfo.updateInfo(self.points, self.shapeName)
+            self.shapeInfo.updateInfo(self.points,
+                                      self.shapeName,
+                                      self.pointNum)
             self.image.setPixmap(QtGui.QPixmap().fromImage(graph1))
             self.graph1 = graph1
 
@@ -188,24 +199,27 @@ class Graph(QtWidgets.QWidget):
         self.points.append([])
         index = len(self.points) - 1
         self.points[index].extend([x1, y1])
-        self.input = PointInput('Point'+str(self.pointNum), self.points[index][0], self.points[index][1])
+        self.input = PointInput('Point' + str(self.pointNum),
+                                self.points[index][0],
+                                self.points[index][1])
         self.coordLayout.insertRow(self.coordLayout.rowCount(), self.input)
         self.shapeInfo.str1.setText('Length of the sides:')
         self.shapeInfo.distance.setStyleSheet('background:solid #F2F3f4')
         self.pointNum += 1
-        self.shapeName.setText(shapes.get(index + 1, 'Undefined shape with {} number of sides'.format(index + 1)))
+        self.shapeName.setText(shapes.get(index + 1,
+                                          ('Undefined shape with {} number of '
+                                           'sides').format(index + 1)))
 
     def info(self):
-        if  not self.pressedOnce:
-            self.extraInfo.setText(self.tr('Extra Info \N{Black Up-Pointing Triangle}'))
+        if not self.pressedOnce:
+            self.extraInfo.setText('Extra Info \N{Black Up-Pointing Triangle}')
             self.shapeInfo.show()
-            self.extraInfo.setStyleSheet('border: transparent')
             self.pressedOnce = True
         else:
             self.shapeInfo.hide()
             self.pressedOnce = False
-            self.extraInfo.setStyleSheet('background:solid #F2F3f4')
-            self.extraInfo.setText(self.tr('Extra Info \N{Black Down-Pointing Triangle}'))
+            self.extraInfo.setText(('Extra Info'
+                                    '\N{Black Down-Pointing Triangle}'))
 
     def dist(self):
         x0 = int(self.points[0][0].text())
@@ -240,8 +254,8 @@ class Graph(QtWidgets.QWidget):
             for i in range(0, len(self.points)):
                 x0 = int(self.points[i][0].text())
                 y0 = int(self.points[i][1].text())
-                x3 = int(self.points[i+1][0].text())
-                y3 = int(self.points[i+1][1].text())
+                x3 = int(self.points[i + 1][0].text())
+                y3 = int(self.points[i + 1][1].text())
                 x1 = x0 if x0 >= x3 else x3
                 y1 = y0 if y0 >= y3 else y3
                 x2 = x0 if x0 < x3 else x3
@@ -260,3 +274,6 @@ class Graph(QtWidgets.QWidget):
             distance = math.sqrt(((x1 - x2) ** 2) + ((y1 - y2) ** 2))
             dist.append(distance)
         return 'Regular' if len(set(dist)) == 1 else 'Irregular'
+
+    def closeEvent(self, e):
+        self.shapeInfo.sidesLength.close()
