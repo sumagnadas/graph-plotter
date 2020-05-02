@@ -165,12 +165,11 @@ class Graph(QtWidgets.QWidget):
                 for i in range(0, len(self.points)):
                     p1 = geometry.Point(int(self.points[i][0].text()), int(self.points[i][1].text()))
                     p2 = geometry.Point(int(self.points[i+1][0].text()), int(self.points[i+1][1].text()))
-                    p.drawLine(p1.x(), p1.y(), p2.x(), p2.y())1
-            except IndexError:
-                if len(self.points) > 2:
-                    p1 = geometry.Point(int(self.points[-1][0].text()), int(self.points[0][1].text()))
-                    p2 = geometry.Point(int(self.points[0][0].text()), int(self.points[-1][1].text()))
                     p.drawLine(p1.x(), p1.y(), p2.x(), p2.y())
+            except IndexError:
+                p1 = geometry.Point(int(self.points[-1][0].text()), int(self.points[-1][1].text()))
+                p2 = geometry.Point(int(self.points[0][0].text()), int(self.points[0][1].text()))
+                p.drawLine(p1.x(), p1.y(), p2.x(), p2.y())
             p.end()
             self.image.setPixmap(QtGui.QPixmap().fromImage(graph1))
             self.graph1 = graph1
