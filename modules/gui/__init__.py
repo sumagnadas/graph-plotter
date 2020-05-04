@@ -1,7 +1,8 @@
 from PySide2 import QtWidgets, QtGui, QtCore
+from PySide2.QtWidgets import QFileDialog, QDialog
 from .input import NumInput, ShapeList, PointInput
 from .info import ExtraInfo
-import os.path as pt
+from os.path import abspath
 from modules import geometry
 import datetime
 import math
@@ -24,6 +25,7 @@ class Graph(QtWidgets.QWidget):
     def __init__(self, ctx, surface, line_color):
         super().__init__()
 
+        self.errorSaving = QtWidgets.QDialog()
         self.fileDir = ''
         self.save_call = False
         self.draw_call = False
@@ -91,15 +93,28 @@ class Graph(QtWidgets.QWidget):
         self.inputLayout.addRow(self.shapeInfo)
         self.scrollArea.setWidget(self.widget)
         self.scrollArea.setVerticalScrollBarPolicy(
-                                    QtCore.Qt.ScrollBarAsNeeded)
+                                        QtCore.Qt.ScrollBarAsNeeded)
         self.scrollArea.setHorizontalScrollBarPolicy(
-                                    QtCore.Qt.ScrollBarAlwaysOff)
+                                        QtCore.Qt.ScrollBarAlwaysOff)
         self.scrollArea.setWidgetResizable(True)
         self.inputLayout.addRow(self.scrollArea)
+
+    def makeErrorDialog(self):
+        imageObj = QtGui.QImage('resources/error_symbol.ico')
+        caption = self.tr('Graph has to be drawn before saving')
+        image = QtWidgets.QLabel()
+        image.setPixmap(QtGui.QPixmap().fromImage(imageObj))
+        label = QtWidgets.QLabel(caption)
+        errorLayout = QtWidgets.QBoxLayout(QtWidgets.QBoxLayout.LeftToRight)
+        errorLayout.addWidget(image)
+        errorLayout.addWidget(label)
+        self.errorSaving.setLayout(errorLayout)
+        self.errorSaving.setModal(True)
 
     def makeWindowLayout(self, buttonBox):
         '''Make the layout of the window'''
 
+        self.makeErrorDialog()
         self.pointinput = QtWidgets.QFormLayout()
         input1 = PointInput('Point1', self.points[0][0], self.points[0][1])
         input2 = PointInput("Point2", self.points[1][0], self.points[1][1])
@@ -119,7 +134,7 @@ class Graph(QtWidgets.QWidget):
     def setImage(self, filename):
         '''Set the image for the graph'''
 
-        self.graph_image = QtGui.QImage(pt.abspath(filename))
+        self.graph_image = QtGui.QImage(abspath(filename))
         self.image.setPixmap(QtGui.QPixmap().fromImage(self.graph_image))
 
     def draw(self):
@@ -145,8 +160,19 @@ class Graph(QtWidgets.QWidget):
         self.image.setPixmap("resources/graph.png")
 
     def save(self):
-        self.save_call = True
-        self.image.update()
+        if hasattr(self, 'graph1'):
+            caption = self.tr('Choose a filename for saving the graph')
+            currentDT = datetime.datetime.now()
+            currentTime = currentDT.strftime("%H:%M:%S")
+            defaultFilename = self.fileDir + "graph-" + currentTime + ".png"
+            filename = QFileDialog.getSaveFileName(self,
+                                                   caption,
+                                                   abspath('./untitled.png'),
+                                                   self.tr('Images (*.png)'))
+            name = filename[0] if len(filename[0]) > 1 else defaultFilename
+            self.graph1.save(name, "PNG")
+        else:
+            self.errorSaving.show()
 
     def check(self):
         for i in self.points:
@@ -184,13 +210,6 @@ class Graph(QtWidgets.QWidget):
                                       self.pointNum)
             self.image.setPixmap(QtGui.QPixmap().fromImage(graph1))
             self.graph1 = graph1
-
-        elif self.save_call:
-            self.save_call = False
-            currentDT = datetime.datetime.now()
-            currentTime = currentDT.strftime("%H:%M:%S")
-            filename = self.fileDir + "graph-" + currentTime + ".png"
-            self.graph1.save(filename, "PNG")
 
     def addPoint(self):
         x1 = NumInput()
@@ -276,4 +295,7 @@ class Graph(QtWidgets.QWidget):
         return 'Regular' if len(set(dist)) == 1 else 'Irregular'
 
     def closeEvent(self, e):
-        self.shapeInfo.sidesLength.close()
+        if hasattr(self.shapeInfo, 'sidesLength'):
+            self.shapeInfo.sidesLength.close()
+        else:
+            e.accept()

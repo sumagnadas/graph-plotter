@@ -17,9 +17,9 @@ class Point(QPoint):
 
     def __init__(self, x=0, y=0):
         x *= 14.85
-        x += 300
+        x += 299
         y *= 14.85
-        y = -y + 300
+        y = -y + 299
         super().__init__(x, y)
 
 
