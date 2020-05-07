@@ -164,13 +164,14 @@ class Graph(QtWidgets.QWidget):
             caption = self.tr('Choose a filename for saving the graph')
             currentDT = datetime.datetime.now()
             currentTime = currentDT.strftime("%H:%M:%S")
-            defaultFilename = self.fileDir + "graph-" + currentTime + ".png"
-            filename = QFileDialog.getSaveFileName(self,
+            defFilename = self.fileDir + "graph-" + currentTime + ".png"
+            self.dialog = QFileDialog()
+            filename = self.dialog.getSaveFileName(self,
                                                    caption,
                                                    abspath('./untitled.png'),
                                                    self.tr('Images (*.png)'))
-            name = filename[0] if len(filename[0]) > 1 else defaultFilename
-            self.graph1.save(name, "PNG")
+            self.name = filename[0] if len(filename[0]) > 1 else defFilename
+            self.graph1.save(self.name, "PNG")
         else:
             self.errorSaving.show()
 

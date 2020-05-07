@@ -1,7 +1,7 @@
 import pytestqt
-from modules.gui.layout import QtGui
+from modules.gui import QtGui
 from modules.gui import Graph
-from modules.gui.overloads import filename
+#from modules.gui import Graph.filename
 from PySide2.QtCore import Qt
 from main import ctx, surface, line_color
 from os import path
@@ -73,7 +73,9 @@ def test_save(qtbot):
     qtbot.waitForWindowShown(window)
 
     qtbot.mouseClick(window.buttonBox.buttons()[0], Qt.LeftButton)
-    window.setSaveFiledir("resources/")
+    qtbot.mouseClick(window.buttonBox.buttons()[2], Qt.LeftButton)
+    window.dialog.close()
+    #window.setSaveFiledir("resources/")
 
-    assert path.exists(path.abspath(filename)) is True, ('Save button '
+    assert path.exists(path.abspath(window.name)) is True, ('Save button '
                                                          'is not working')

@@ -20,8 +20,8 @@ def test_coordBox(qtbot):
     qtbot.mouseClick(window.buttonBox.buttons()[0], Qt.LeftButton)
 
     for i in window.points:
-        assert i[0].text() == 0, str
-        assert i[1].text() == 0, str
+        assert i[0].text() == '0', str
+        assert i[1].text() == '0', str
 
 
 def test_intInput(qtbot):
