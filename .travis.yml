@@ -1,0 +1,22 @@
+dist: bionic
+language: python
+python:
+  - "3.6"
+  - "3.7"
+  - "3.8"
+addons:
+  apt:
+    packages:
+      - build-essential
+      - libssl-dev
+      - libffi-dev
+      - pkg-config
+      - python3-cairo
+      - libcairo2*
+before_install:
+  - sudo apt-get update
+  - sudo apt-get install -y build-essential libssl-dev libffi-dev pkg-config python3-cairo libcairo2*
+install:
+  - pip install -r requirements_linux.txt
+script:
+  pytest
