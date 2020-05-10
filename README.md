@@ -14,44 +14,14 @@ The saved photo right now has transparent background but in future, it can be cu
 ---
 ## Summary
 
-  - [Prerequisites](#prerequisites)
   - [Installing](#installing)
   - [Contributing](#contributing)
   - [Versioning](#versioning)
   - [License](#license)
   - [Acknowledgments](#acknowledgments)
 
-### Prerequisites
-
-You need to have the following dependencies installed using apt
-
-- ``libcairo2-dev``
-
-You can also use requirements.txt to install all the dependencies.
-
-
-### Installing
-1. First clone the repository on your computer
-```
-git clone https://github.com/sumagnadas/graph-plotter.git
-```
-2.Install all the dependencies
-```
-pip3 install -r requirements.txt
-```
-3. Now run the script
-```
-python3 main.py
-```
-or
-```
-./main.py
-```
-from the directory containing the repository
-
-Now the application is ready to run.
-
-###### Note: This application right now works on Linux only. Other platforms are to be tested later
+## Installing
+Please refer to [INSTALLING.md](https://github.com/sumagnadas/graph-plotter/INSTALLING.md) on how to make this program work on your computer
 
 
 ## Contributing
@@ -60,7 +30,7 @@ If you want to contribute to this repository, then create an issue about the bug
 
 ## Versioning
 
-For the versions available, see the [tags on this repository](https://github.com/sumagnadas/graph-plotter/tags).
+For the versions available, see the [tags on this repository](https://github.com/sumagnadas/graph-plotter/tags).  
 
 ## License
 This project is licensed under the GPL-2.0 License - see the [LICENSE](LICENSE) file for details
