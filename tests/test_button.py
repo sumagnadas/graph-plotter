@@ -61,7 +61,7 @@ def test_clear(qtbot):
                                                                  'working')
 
 
-def test_save(qtbot):
+def test_save(qtbot, tmpdir_factory):
     window = Graph(ctx, surface, line_color)
     window.show()
     qtbot.addWidget(window)
@@ -72,10 +72,11 @@ def test_save(qtbot):
     window.y_coord2.setText('20')
     qtbot.waitForWindowShown(window)
 
+    window.beingTested = True
+    fn = tmpdir_factory.mktemp("data")
+    window.setSaveFiledir(str(fn))
     qtbot.mouseClick(window.buttonBox.buttons()[0], Qt.LeftButton)
     qtbot.mouseClick(window.buttonBox.buttons()[2], Qt.LeftButton)
-    window.dialog.close()
-    #window.setSaveFiledir("resources/")
 
-    assert path.exists(path.abspath(window.name)) is True, ('Save button '
+    assert fn.join("img.png").check() is True, ('Save button '
                                                          'is not working')

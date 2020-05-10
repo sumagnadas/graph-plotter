@@ -25,6 +25,7 @@ class Graph(QtWidgets.QWidget):
     def __init__(self, ctx, surface, line_color):
         super().__init__()
 
+        self.beingTested = False
         self.errorSaving = QtWidgets.QDialog()
         self.fileDir = ''
         self.save_call = False
@@ -160,20 +161,25 @@ class Graph(QtWidgets.QWidget):
         self.image.setPixmap("resources/graph.png")
 
     def save(self):
-        if hasattr(self, 'graph1'):
-            caption = self.tr('Choose a filename for saving the graph')
-            currentDT = datetime.datetime.now()
-            currentTime = currentDT.strftime("%H:%M:%S")
-            defFilename = self.fileDir + "graph-" + currentTime + ".png"
-            self.dialog = QFileDialog()
-            filename = self.dialog.getSaveFileName(self,
-                                                   caption,
-                                                   abspath('./untitled.png'),
-                                                   self.tr('Images (*.png)'))
-            self.name = filename[0] if len(filename[0]) > 1 else defFilename
-            self.graph1.save(self.name, "PNG")
+        if not self.beingTested:
+            if hasattr(self, 'graph1'):
+                caption = self.tr('Choose a filename for saving the graph')
+                currentDT = datetime.datetime.now()
+                currentTime = currentDT.strftime("%H:%M:%S")
+                defFilename = self.fileDir + "graph-" + currentTime + ".png"
+                self.dialog = QFileDialog()
+                filename = self.dialog.getSaveFileName(self,
+                                                       caption,
+                                                       abspath('./untitled.png'),
+                self.tr('Images (*.png)'))
+                self.name = filename[0] if len(filename[0]) > 1 else defFilename
+                self.graph1.save(self.name, "PNG")
+            else:
+                self.errorSaving.show()
         else:
-            self.errorSaving.show()
+            self.defFilename = str(self.fileDir) + ("/img.png")
+            self.graph1.save(str(self.defFilename), "PNG")
+
 
     def check(self):
         for i in self.points:
