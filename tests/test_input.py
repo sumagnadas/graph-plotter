@@ -1,14 +1,13 @@
 import pytestqt
 from modules.gui import Graph
-from main import ctx, surface, line_color
+#from main import ctx, surface, line_color
 from PySide2.QtCore import Qt
 from time import sleep
 
 
+window = Graph(10, 10, 10)
 def test_coordBox(qtbot):
-    window = Graph(ctx, surface, line_color)
     window.show()
-    qtbot.addWidget(window)
     str = ('Empty '
            'input box should be taken as zero')
 
@@ -25,7 +24,6 @@ def test_coordBox(qtbot):
 
 
 def test_intInput(qtbot):
-    window = Graph(ctx, surface, line_color)
     window.show()
     qtbot.addWidget(window)
     str = 'Coordinates input box is not supposed take in letter input'

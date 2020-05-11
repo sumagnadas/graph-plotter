@@ -1,12 +1,12 @@
 import pytestqt
 from modules.gui import QtGui
-from modules.gui import Graph
+from modules.gui import Graph, QtWidgets
 #from modules.gui import Graph.filename
 from PySide2.QtCore import Qt
-from main import ctx, surface, line_color
+#from main import ctx, surface, line_color
 from os import path
 
-
+app = QtWidgets.QApplication()
 window = Graph(10, 10, 10)
 def test_draw(qtbot):
     window.show()
