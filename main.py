@@ -36,6 +36,6 @@ surface.write_to_png("resources/graph.png")
 
 # The code for the main application
 if __name__ == "__main__":
-    graphPlotter = Graph(ctx, surface, line_color)  # Make the window
+    graphPlotter = Graph()  # Make the window
     graphPlotter.show()
     sys.exit(app.exec_())

@@ -22,7 +22,7 @@ shapes = {
 class Graph(QtWidgets.QWidget):
     """Class which defines the window of the application"""
 
-    def __init__(self, ctx, surface, line_color):
+    def __init__(self):
         super().__init__()
 
         self.beingTested = False
@@ -70,11 +70,6 @@ class Graph(QtWidgets.QWidget):
         # Layout for the window
         self.makeWindowLayout(self.buttonBox)
         self.setImage("resources/graph.png")
-
-        # Some extra values for the implementation of the GUi
-        self.ctx = ctx
-        self.surface = surface
-        self.line_color = line_color
 
     def makeInputLayout(self):
         text = 'Extra Info \N{Black Down-Pointing Triangle}'

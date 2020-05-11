@@ -1,11 +1,10 @@
 import pytestqt
 from modules.gui import Graph
-#from main import ctx, surface, line_color
 from PySide2.QtCore import Qt
 from time import sleep
 
 
-window = Graph(10, 10, 10)
+window = Graph()
 def test_coordBox(qtbot):
     window.show()
     str = ('Empty '
