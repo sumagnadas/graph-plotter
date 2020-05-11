@@ -9,8 +9,6 @@ python:
 addons:
   apt:
     packages:
-      - xvfb
-      - herbstluftwm
       - build-essential
       - libssl-dev
       - libffi-dev
@@ -19,9 +17,6 @@ addons:
       - libcairo2*
       - x11-utils
       - libxkbcommon-x11-0
-before_script:
-  - "herbstluftwm &"
-  - sleep 1
 install:
   #- "export DISPLAY=:99.0"
   #- "/sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -screen 0 1920x1200x24 -ac +extension GLX +render -noreset"
