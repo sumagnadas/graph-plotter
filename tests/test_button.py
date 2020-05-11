@@ -7,10 +7,10 @@ from main import ctx, surface, line_color
 from os import path
 
 
+window = Graph(10, 10, 10)
 def test_draw(qtbot):
-    window = Graph(ctx, surface, line_color)
     window.show()
-    qtbot.addWidget(window)
+    #qtbot.addWidget(window)
 
     window.x_coord1.setText('10')
     window.y_coord1.setText('10')
@@ -29,9 +29,9 @@ def test_draw(qtbot):
 
 
 def test_clear(qtbot):
-    window = Graph(ctx, surface, line_color)
-    window.show()
-    qtbot.addWidget(window)
+    #window = Graph(ctx, surface, line_color)
+    #window.show()
+    #qtbot.addWidget(window)
 
     window.x_coord1.setText('10')
     window.y_coord1.setText('10')
@@ -39,7 +39,7 @@ def test_clear(qtbot):
     window.y_coord2.setText('20')
     qtbot.waitForWindowShown(window)
 
-    qtbot.mouseClick(window.buttonBox.buttons()[0], Qt.LeftButton)
+    qtbot.mouseClick(window.buttonBox.buttons()[1], Qt.LeftButton)
 
     assert window.x_coord1.text() == '0', "Reset button is not working"
     assert window.y_coord1.text() == '0', "Reset button is not working"
@@ -48,9 +48,9 @@ def test_clear(qtbot):
 
 
 def test_save(qtbot, tmpdir_factory):
-    window = Graph(ctx, surface, line_color)
-    window.show()
-    qtbot.addWidget(window)
+    #window = Graph(ctx, surface, line_color)
+    #window.show()
+    #qtbot.addWidget(window)
 
     window.x_coord1.setText('10')
     window.y_coord1.setText('10')
