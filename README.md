@@ -1,4 +1,4 @@
-# graph-plotter
+# graph-plotter [![Build Status](https://travis-ci.com/sumagnadas/graph-plotter.svg?branch=main)](https://travis-ci.com/sumagnadas/graph-plotter)
 
 A Graph Plotter written in python and built on Qt framework.\
 The graph is plotted on the left side and the points are given on the right side.\
