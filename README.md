@@ -21,7 +21,7 @@ The saved photo right now has transparent background but in future, it can be cu
   - [Acknowledgments](#acknowledgments)
 
 ## Installing
-Please refer to [INSTALLING.md](https://github.com/sumagnadas/graph-plotter/INSTALLING.md) on how to make this program work on your computer
+Please refer to [INSTALLING.md](https://github.com/sumagnadas/graph-plotter/blob/main/INSTALLING.md) on how to make this program work on your computer
 
 
 ## Contributing
