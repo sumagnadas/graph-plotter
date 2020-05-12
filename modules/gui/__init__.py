@@ -168,12 +168,12 @@ class Graph(QtWidgets.QWidget):
                                                        abspath('./untitled.png'),
                 self.tr('Images (*.png)'))
                 self.name = filename[0] if len(filename[0]) > 1 else defFilename
-                self.graph1.save(self.name, "PNG")
+                self.image.grab().toImage().save(self.name, "PNG")
             else:
                 self.errorSaving.show()
         else:
             self.defFilename = str(self.fileDir) + ("/img.png")
-            self.graph1.save(str(self.defFilename), "PNG")
+            self.image.grab().toImage().save(str(self.defFilename), "PNG")
 
 
     def check(self):
@@ -199,7 +199,6 @@ class Graph(QtWidgets.QWidget):
                                       self.shapeName,
                                       self.pointNum)
             self.image.setPixmap(QtGui.QPixmap().fromImage(graph1))
-            self.graph1 = graph1
 
     def addPoint(self):
         x1 = NumInput()
