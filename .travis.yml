@@ -6,47 +6,26 @@ jobs:
       services:
         - xvfb
       name: "Python 3.6 on Bionic Linux"
-      python: 3.6
-      addons:
-        apt:
-          packages:
-            - build-essential
-            - libssl-dev
-            - libffi-dev
-            - pkg-config
-            - python3-cairo
-            - libcairo2*
-            - x11-utils
-            - libxkbcommon-x11-0
-    - - os: linux
+      python:
+        - 3.6
+        - 3.7
+    - os: linux
       dist: bionic
       services:
         - xvfb
       name: "Python 3.7 on Bionic Linux"
       python: 3.7
-      addons:
-        apt:
-          packages:
-            - build-essential
-            - libssl-dev
-            - libffi-dev
-            - pkg-config
-            - python3-cairo
-            - libcairo2*
-            - x11-utils
-            - libxkbcommon-x11-0
-
-#addons:
-#  apt:
-#    packages:
-#      - build-essential
-#      - libssl-dev
-#      - libffi-dev
-#      - pkg-config
-#      - python3-cairo
-#      - libcairo2*
-#      - x11-utils
-#      - libxkbcommon-x11-0
+addons:
+  apt:
+    packages:
+      - build-essential
+      - libssl-dev
+      - libffi-dev
+      - pkg-config
+      - python3-cairo
+      - libcairo2*
+      - x11-utils
+      - libxkbcommon-x11-0
 install:
   - pip install -r requirements_linux.txt
 script:
