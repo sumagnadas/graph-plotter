@@ -30,15 +30,15 @@ jobs:
       before_install:
         - choco install python --version=3.7.7
         - choco install gtk-runtime
-        - pip install --upgrade pip
+        - pip install --user --upgrade pip
       env: PATH=/c/Python37:/c/Python37/Scripts:$PATH
       name: "Python 3.7 on Windows"
     - os: windows
       language: shell
       before_install:
-        - choco install python  # this install takes at least 1 min 30 sec
+        - choco install python
         - choco install gtk-runtime
-        - pip install --upgrade pip
+        - pip install --user --upgrade pip
       env: PATH=/c/Python37:/c/Python37/Scripts:$PATH
       name: "Python 3.8 on Windows"
 addons:
@@ -53,7 +53,7 @@ addons:
       - x11-utils
       - libxkbcommon-x11-0
 install:
-  - if [ "$TRAVIS_OS_NAME" = "windows" ]; then pip install -r requirements_windows.txt; ; pip install pycairo-1.19.1-cp38-cp38-win_amd64.whl; fi
+  - if [ "$TRAVIS_OS_NAME" = "windows" ]; then pip install -r requirements_linux.txt; fi
   - if [ "$TRAVIS_OS_NAME" = "linux" ]; then pip install -r requirements_linux.txt; fi
   - if [ "$TRAVIS_OS_NAME" = "osx" ]; then pip install -r requirements_linux.txt; fi
 script:
