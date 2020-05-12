@@ -51,7 +51,7 @@ addons:
       - x11-utils
       - libxkbcommon-x11-0
 install:
-  - if [ "$TRAVIS_OS_NAME" = "windows" ]; then pip install -r requirements_windows.txt;
+  - if [ "$TRAVIS_OS_NAME" = "windows" ]; then pip install -r requirements_windows.txt; cd resources; pip install pycairo-1.19.1-cp38-cp38-win_amd64.whl; fi
   - if [ "$TRAVIS_OS_NAME" = "linux" ]; then pip install -r requirements_linux.txt;
   - if [ "$TRAVIS_OS_NAME" = "osx" ]; then pip install -r requirements_linux.txt;
 script:
