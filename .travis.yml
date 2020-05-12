@@ -4,7 +4,6 @@ jobs:
   allow_failures:
     os:
       - osx
-      - windows
   include:
     - os: linux
       dist: bionic
@@ -27,74 +26,12 @@ jobs:
       language: shell
       before_install:
         - choco install python3
-        - choco install gtk-runtime
-        - |-
-            case $TRAVIS_OS_NAME in
-              windows)
-                [[ ! -f C:/tools/msys64/msys2_shell.cmd ]] && rm -rf C:/tools/msys64
-                choco uninstall -y mingw
-                choco upgrade --no-progress -y msys2
-                export msys2='cmd //C RefreshEnv.cmd '
-                export msys2+='& set MSYS=winsymlinks:nativestrict '
-                export msys2+='& C:\\tools\\msys64\\msys2_shell.cmd -defterm -no-start'
-                export mingw64="$msys2 -mingw64 -full-path -here -c "\"\$@"\" --"
-                export msys2+=" -msys2 -c "\"\$@"\" --"
-                $msys2 pacman --sync --noconfirm --needed mingw-w64-x86_64-toolchain
-                taskkill //IM gpg-agent.exe //F
-                export PATH=/C/tools/msys64/mingw64/bin:$PATH
-                export MAKE=mingw32-make
-                ;;
-            esac
-        - $msys2 pacman -S --noconfirm mingw-w64-x86_64-cairo
-      before_cache:
-      - |-
-          case $TRAVIS_OS_NAME in
-            windows)
-              $msys2 pacman --sync --clean --noconfirm
-              ;;
-          esac
-
-      cache:
-          directories:
-          - $HOME/AppData/Local/Temp/chocolatey
-          - /C/tools/msys64
       env: PATH=/c/Python37:/c/Python37/Scripts:$PATH
       name: "Python 3.7 on Windows"
     - os: windows
       language: shell
       before_install:
         - choco install python3
-        - choco install gtk-runtime
-        - |-
-            case $TRAVIS_OS_NAME in
-              windows)
-                [[ ! -f C:/tools/msys64/msys2_shell.cmd ]] && rm -rf C:/tools/msys64
-                choco uninstall -y mingw
-                choco upgrade --no-progress -y msys2
-                export msys2='cmd //C RefreshEnv.cmd '
-                export msys2+='& set MSYS=winsymlinks:nativestrict '
-                export msys2+='& C:\\tools\\msys64\\msys2_shell.cmd -defterm -no-start'
-                export mingw64="$msys2 -mingw64 -full-path -here -c "\"\$@"\" --"
-                export msys2+=" -msys2 -c "\"\$@"\" --"
-                $msys2 pacman --sync --noconfirm --needed mingw-w64-x86_64-toolchain
-                taskkill //IM gpg-agent.exe //F
-                export PATH=/C/tools/msys64/mingw64/bin:$PATH
-                export MAKE=mingw32-make
-                ;;
-            esac
-        - $msys2 pacman -S --noconfirm mingw-w64-x86_64-cairo
-      before_cache:
-      - |-
-          case $TRAVIS_OS_NAME in
-            windows)
-              $msys2 pacman --sync --clean --noconfirm
-              ;;
-          esac
-
-      cache:
-          directories:
-          - $HOME/AppData/Local/Temp/chocolatey
-          - /C/tools/msys64
       env: PATH=/c/Python37:/c/Python37/Scripts:$PATH
       name: "Python 3.8 on Windows"
 addons:
@@ -103,14 +40,11 @@ addons:
       - build-essential
       - libssl-dev
       - libffi-dev
-      - pkg-config
-      - python3-cairo
-      - libcairo2*
       - x11-utils
       - libxkbcommon-x11-0
 install:
-  - if [ "$TRAVIS_OS_NAME" = "windows" ]; then py -m pip install -r requirements_linux.txt; fi
-  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then pip3 install -r requirements_linux.txt; fi
-  - if [ "$TRAVIS_OS_NAME" = "osx" ]; then pip3 install -r requirements_linux.txt; fi
+  - if [ "$TRAVIS_OS_NAME" = "windows" ]; then py -m pip install -r requirements.txt; fi
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then pip3 install -r requirements.txt; fi
+  - if [ "$TRAVIS_OS_NAME" = "osx" ]; then pip3 install -r requirements.txt; fi
 script:
-  pytest
+  pytest -vxrs

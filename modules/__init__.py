@@ -1,54 +1,73 @@
-import cairo
 from modules import geometry
+from PySide2.QtGui import QImage, QPainter, QPen, QPainter
+from PySide2.QtCore import Qt
 
 
-def set_axes(ctx, axes_color):
-    """Draws the axes on the canvas of the cairo object
+def draw_quad(p, p1, p2, p3, p4):
+    """Draws a quadrilateral on the QImage object
 
     Params:-
-
-    ctx - The cairo object for which the axes have to be set up
-    axes_color - Color object for axes
+        p - The QPainter object which is drawing the shape
+        p1, p2, p3, p4 - Consecutive points of the shape
     """
-    ctx.move_to(0.5, 0)
-    ctx.line_to(0.5, 1)
-    ctx.close_path()
-    ctx.set_source_rgb(axes_color.get_red(),
-                       axes_color.get_green(),
-                       axes_color.get_blue())
-    ctx.set_line_width(0.005)
-    ctx.stroke()
 
-    ctx.move_to(0, 0.5)
-    ctx.line_to(1, 0.5)
-    ctx.close_path()
-    ctx.set_source_rgb(axes_color.get_red(),
-                       axes_color.get_green(),
-                       axes_color.get_blue())
-    ctx.set_line_width(0.005)
-    ctx.stroke()
-    shape = geometry.Geometry()
+    p.drawLine(p1, p2)
+    p.drawLine(p3, p4)
+    p.drawLine(p2, p3)
+    p.drawLine(p1, p4)
 
-    ctx.translate(0.5, 0.5)
-    shape.draw_grid(ctx, axes_color)
-    ctx.scale(1, -1)
+def draw_grid(p):
+    """Draws a grid on the QImage object
+    Params:-
+        p - The QPainter object which is drawing the shape
+    """
 
+    for i in range(-20, 20, 2):
+        for j in range(-20, 20, 2):
+            p1 = geometry.Point(i, j)
+            p2 = geometry.Point(i + 10, j)
+            p3 = geometry.Point(i + 10, j + 10)
+            p4 = geometry.Point(i, j + 10)
+            draw_quad(p, p1, p2, p3, p4)
 
-def setup_canvas(colour, WIDTH, HEIGHT, alpha=1):
-    """Makes the canvas on which the shape/graph will be drawn before output"""
+    for i in range(-20, 20, 1):
+        for j in range(-20, 20, 1):
+            p1 = geometry.Point(i, j)
+            p2 = geometry.Point(i + 10, j)
+            p3 = geometry.Point(i + 10, j + 10)
+            p4 = geometry.Point(i, j + 10)
+            draw_quad(p, p1, p2, p3, p4)
 
-    surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, WIDTH, HEIGHT)
-    ctx = cairo.Context(surface)
-    ctx.scale(WIDTH, HEIGHT)
-
-    pat = cairo.LinearGradient(0.0, 0.0, 0.0, 1.0)
-    pat.add_color_stop_rgba(0,
-                            colour.get_red(),
-                            colour.get_blue(),
-                            colour.get_blue(),
-                            alpha)
-
-    ctx.rectangle(0, 0, 1, 1)
-    ctx.set_source(pat)
-    ctx.fill()
-    return ctx, surface
+def configureImage(width, height):
+    """Configures the image for the graph that will be shown in the
+    application
+    Params:-
+        width -  Width of the screen on which the application will be shown
+        height - Height of the screen on which the application will be shown
+    """
+    p1 = geometry.Point(0, -20)
+    p2 = geometry.Point(0, 20)
+    p3 = geometry.Point(20, 0)
+    p4 = geometry.Point(-20, 0)
+    p5 = geometry.Point(20, 20)
+    p6 = geometry.Point(-20, 20)
+    p7 = geometry.Point(-20, -20)
+    p8 = geometry.Point(20, -20)
+    graphImage = QImage(width, height, QImage.Format_ARGB32)
+    pen = QPen(Qt.black, 3)
+    p = QPainter()
+    p.begin(graphImage)
+    p.setPen(pen)
+    p.drawLine(p1, p2)
+    p.drawLine(p3, p4)
+    pen = QPen(Qt.black, 2)
+    p.setPen(pen)
+    p.drawLine(p5, p6)
+    p.drawLine(p6, p7)
+    p.drawLine(p7, p8)
+    p.drawLine(p8, p5)
+    pen = QPen(Qt.black, 1)
+    p.setPen(pen)
+    draw_grid(p)
+    p.end()
+    graphImage.save("resources/graph.png", "PNG")

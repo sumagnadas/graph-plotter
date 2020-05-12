@@ -12,13 +12,9 @@
     ```
   2. Install all the dependencies
     ```
-    python -m pip install -r requirements_windows.txt
+    python -m pip install -r requirements.txt
     ```
-  3. Install cairo using MSYS2(Download MSYS2 from [here](https://www.msys2.org/)). Open a MSYS2 shell and run
-    ```
-    pacman -S mingw-w64-x86_64-cairo
-    ```
-  4. Now run the script
+  3. Now run the script
     ```
     python main.py
     ```
@@ -31,24 +27,19 @@
     ```
     git clone https://github.com/sumagnadas/graph-plotter.git
     ```
-    2. Install libcairo2-dev<br>
-    ##### For Ubuntu/Debian derivatives:
+    3. Install all the dependencies
     ```
-    sudo apt-get install libcairo2-dev
+    python3 -m pip install -r requirements.txt
     ```
-    ##### For Fedora:
+    or
     ```
-    sudo yum install cairo-devel
-    ```
-    ##### For openSUSE:
-    ```
-    zypper install cairo-devel
-    ```
-    3. Install all the other dependencies
-    ```
-    python -m pip install -r requirements_linux.txt
+    pip3 install -r requirements.txt
     ```
     4. Now run the script
+    ```
+    python3 main.py
+    ```
+    or
     ```
     ./main.py
     ```

@@ -193,19 +193,7 @@ class Graph(QtWidgets.QWidget):
             p = QtGui.QPainter()
             p.begin(graph1)
             p.setPen(pen)
-            try:
-                for i in range(0, len(self.points)):
-                    p1 = geometry.Point(int(self.points[i][0].text()),
-                                        int(self.points[i][1].text()))
-                    p2 = geometry.Point(int(self.points[i + 1][0].text()),
-                                        int(self.points[i + 1][1].text()))
-                    p.drawLine(p1.x(), p1.y(), p2.x(), p2.y())
-            except IndexError:
-                p1 = geometry.Point(int(self.points[-1][0].text()),
-                                    int(self.points[-1][1].text()))
-                p2 = geometry.Point(int(self.points[0][0].text()),
-                                    int(self.points[0][1].text()))
-                p.drawLine(p1.x(), p1.y(), p2.x(), p2.y())
+            geometry.plot(p, self.points)
             p.end()
             self.shapeInfo.updateInfo(self.points,
                                       self.shapeName,
