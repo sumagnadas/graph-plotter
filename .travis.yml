@@ -26,7 +26,7 @@ jobs:
     - os: windows
       language: shell
       before_install:
-        - choco install python
+        - choco install python3
         - choco install gtk-runtime
         - |-
             case $TRAVIS_OS_NAME in
@@ -63,7 +63,7 @@ jobs:
     - os: windows
       language: shell
       before_install:
-        - choco install python
+        - choco install python3
         - choco install gtk-runtime
         - |-
             case $TRAVIS_OS_NAME in
