@@ -14,10 +14,9 @@
     ```
     python -m pip install -r requirements_windows.txt
     ```
-  3. Install pycairo
+  3. Install cairo using MSYS2(Download MSYS2 from [here](https://www.msys2.org/)). Open a MSYS2 shell and run
     ```
-    cd resources
-    pip install pycairo-1.19.1-cp38-cp38-win_amd64.whl
+    pacman -S mingw-w64-x86_64-cairo
     ```
   4. Now run the script
     ```
