@@ -109,7 +109,7 @@ addons:
       - x11-utils
       - libxkbcommon-x11-0
 install:
-  - if [ "$TRAVIS_OS_NAME" = "windows" ]; then pip install -r requirements_linux.txt; fi
+  - if [ "$TRAVIS_OS_NAME" = "windows" ]; then py -m pip install -r requirements_linux.txt; fi
   - if [ "$TRAVIS_OS_NAME" = "linux" ]; then pip3 install -r requirements_linux.txt; fi
   - if [ "$TRAVIS_OS_NAME" = "osx" ]; then pip3 install -r requirements_linux.txt; fi
 script:
