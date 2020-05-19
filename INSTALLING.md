@@ -22,6 +22,7 @@
 ## For Linux and macOS
   - ### Prerequisites(Linux)
     - `python 3.7 or above`
+    - `python3-pip`(if it is not installed by default)
     - `build-essential`
     - `libssl-dev`
     - `libffi-dev`
