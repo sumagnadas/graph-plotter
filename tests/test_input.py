@@ -1,7 +1,6 @@
 import pytestqt
 from modules.gui import Graph
 from PySide2.QtCore import Qt
-from time import sleep
 
 
 window = Graph()
@@ -23,9 +22,8 @@ def test_coordBox(qtbot):
 
 
 def test_intInput(qtbot):
-    window.show()
     qtbot.addWidget(window)
-    str = 'Coordinates input box is not supposed take in letter input'
+    str = 'Coordinates input box is not supposed take in letter as input'
 
     for i in window.points:
         qtbot.keyClicks(i[0], 'A')

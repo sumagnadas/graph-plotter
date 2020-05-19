@@ -8,7 +8,6 @@ app = QtWidgets.QApplication()
 window = Graph()
 def test_draw(qtbot):
     window.show()
-    #qtbot.addWidget(window)
 
     window.x_coord1.setText('10')
     window.y_coord1.setText('10')
@@ -27,10 +26,6 @@ def test_draw(qtbot):
 
 
 def test_clear(qtbot):
-    #window = Graph(ctx, surface, line_color)
-    #window.show()
-    #qtbot.addWidget(window)
-
     window.x_coord1.setText('10')
     window.y_coord1.setText('10')
     window.x_coord2.setText('20')
@@ -46,10 +41,6 @@ def test_clear(qtbot):
 
 
 def test_save(qtbot, tmpdir_factory):
-    #window = Graph(ctx, surface, line_color)
-    #window.show()
-    #qtbot.addWidget(window)
-
     window.x_coord1.setText('10')
     window.y_coord1.setText('10')
     window.x_coord2.setText('20')
@@ -64,3 +55,6 @@ def test_save(qtbot, tmpdir_factory):
 
     assert fn.join("img.png").check() is True, ('Save button '
                                                          'is not working')
+def test_addbutton(qtbot):
+    qtbot.mouseClick(window.addButton, Qt.LeftButton)
+    assert window.coordLayout.rowCount() == 4, "\"Add Point\" button is not working"
