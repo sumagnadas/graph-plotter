@@ -5,8 +5,6 @@ from modules.gui import Graph, QtWidgets
 import sys
 
 
-
-
 # The code for the main application
 def main():
     # Some necessary variables

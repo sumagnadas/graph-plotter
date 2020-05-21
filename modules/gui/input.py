@@ -10,7 +10,7 @@ class NumInput(QtWidgets.QLineEdit):
         super().__init__()
         self.setMaximumWidth(100)
         self.setMaxLength(4)
-        onlyInt = QtGui.QIntValidator(-300, 300)
+        onlyInt = QtGui.QIntValidator(-20, 20)
         self.setValidator(onlyInt)
         self.setText("0")
         self.setSizePolicy(QtWidgets.QSizePolicy.Minimum,
@@ -20,27 +20,30 @@ class NumInput(QtWidgets.QLineEdit):
         if self.text() == '':
             self.setText('0')
 
-
-class ShapeList(QtWidgets.QComboBox):
-
-    def __init__(self):
-        super().__init__()
-        self.addItems(['Line', 'Triangle', 'Quadrilateral', 'Polygon'])
-        self.setSizePolicy(QtWidgets.QSizePolicy.Minimum,
-                           QtWidgets.QSizePolicy.Minimum)
-
-
 class PointInput(QtWidgets.QWidget):
     def __init__(self, str, x, y):
         super().__init__()
+        self.removeButton = QtWidgets.QPushButton('')
+        self.removeButton.setStyleSheet('border: transparent')
+        self.removeButton.hide()
         self.layout = QtWidgets.QFormLayout()
-        self.layout.addRow(QtWidgets.QLabel(str))
+        str = QtWidgets.QLabel(str)
+        layout = QtWidgets.QHBoxLayout()
+        layout.addWidget(str)
+        layout.addSpacing(0)
+        layout.addWidget(self.removeButton)
+        self.layout.addRow(layout)
         self.layout.addRow('X:', x)
         self.layout.addRow('Y:', y)
         self.setLayout(self.layout)
+        self.x = x
+        self.y = y
 
     def addRow(self, layout):
         self.layout.addRow(layout)
 
     def insertRow(self, layout):
         self.layout.insertRow(0, layout)
+
+    def xy(self):
+        return [self.x, self.y]

@@ -1,6 +1,6 @@
 from PySide2 import QtWidgets, QtGui, QtCore
 from PySide2.QtWidgets import QFileDialog, QDialog, QCheckBox
-from .input import NumInput, ShapeList, PointInput
+from .input import NumInput, PointInput
 from .info import ExtraInfo
 from os.path import abspath
 from modules import geometry
@@ -18,7 +18,7 @@ class Graph(QtWidgets.QWidget):
         self.closedFigure = False
         self.beingTested = False
         self.fileDir = ''
-        self.pointNum = 3
+        self.pointNum = 2
         self.image = QtWidgets.QLabel()  # Image container for the graph
 
         self.pressedOnce = False
@@ -112,7 +112,7 @@ class Graph(QtWidgets.QWidget):
         # The primary inputs for the coordinates of the lines
         input1 = PointInput('Point1', self.points[0][0], self.points[0][1])
         input2 = PointInput("Point2", self.points[1][0], self.points[1][1])
-
+        self.input = [input1, input2]
         # The layout area of the input
         layout = QtWidgets.QBoxLayout(QtWidgets.QBoxLayout.LeftToRight)
         self.addButton = QtWidgets.QPushButton(self.tr('+'), clicked=self.addPoint)
@@ -184,6 +184,8 @@ class Graph(QtWidgets.QWidget):
         self.fileDir = filedir
 
     def addPoint(self):
+        """Adds an input for the user to put in coordinates for another point"""
+
         # Name of the shape
         shapes = {
             3: 'Triangle' if self.buttonBox.buttons()[3].isChecked() else 'Angle',
@@ -201,17 +203,23 @@ class Graph(QtWidgets.QWidget):
         y1 = NumInput()
 
         # Extend the points variable to include the new points
+        self.pointNum += 1
         self.points.append([])
         index = len(self.points) - 1
         self.points[index].extend([x1, y1])
-        input = PointInput('Point' + str(self.pointNum),
+        self.input.append(PointInput('Point' + str(self.pointNum),
                                 self.points[index][0],
-                                self.points[index][1])
+                                self.points[index][1]))
 
-        self.coordLayout.insertRow(self.coordLayout.rowCount(), input)
+        self.input[-1].removeButton.setIcon(QtGui.QIcon(QtGui.QPixmap("resources/removeButton.png")))
+        self.input[-1].removeButton.show()
+        input = self.input[-1]
+        self.input[-1].removeButton.clicked.connect(lambda: self.removePoint(input))
+        self.input[-1].removeButton.setShortcut("Ctrl+Del")
+        self.input[-1].removeButton.setToolTip("Removes the input area for this point(Ctrl+Del[+Space])")
+        self.coordLayout.insertRow(self.coordLayout.rowCount(), self.input[-1])
         self.shapeInfo.str1.setText('Length of the sides:')
         self.shapeInfo.distance.setStyleSheet('background:solid #F2F3f4')
-        self.pointNum += 1
         self.shapeName.setText(shapes.get(index + 1,
                                           ('Undefined shape with {} number of '
                                            'sides').format(index + 1)))
@@ -240,23 +248,22 @@ class Graph(QtWidgets.QWidget):
             e.accept()
 
     def shapeNameChange(self, e):
-        if len(self.points) == 2:
-            pass
-        else:
-            shapes = {
-                3: 'Triangle' if self.buttonBox.buttons()[3].isChecked() else 'Angle',
-                4: 'Quadrilateral' if self.buttonBox.buttons()[3].isChecked() else 'Open Polygon',
-                5: 'Pentagon' if self.buttonBox.buttons()[3].isChecked() else 'Open Polygon',
-                6: 'Hexagon' if self.buttonBox.buttons()[3].isChecked() else 'Open Polygon',
-                7: 'Septagon' if self.buttonBox.buttons()[3].isChecked() else 'Open Polygon',
-                8: 'Octagon' if self.buttonBox.buttons()[3].isChecked() else 'Open Polygon',
-                9: 'Enneagon' if self.buttonBox.buttons()[3].isChecked() else 'Open Polygon',
-                10: 'Decagon' if self.buttonBox.buttons()[3].isChecked() else 'Open Polygon'
-            }
-            index = len(self.points) - 1
-            self.shapeName.setText(shapes.get(index + 1,
-                                              ('Undefined shape with {} number of '
-                                               'sides').format(index + 1)))
+        shapes = {
+            2: 'Line',
+            3: 'Triangle' if self.buttonBox.buttons()[3].isChecked() else 'Angle',
+            4: 'Quadrilateral' if self.buttonBox.buttons()[3].isChecked() else 'Open Polygon',
+            5: 'Pentagon' if self.buttonBox.buttons()[3].isChecked() else 'Open Polygon',
+            6: 'Hexagon' if self.buttonBox.buttons()[3].isChecked() else 'Open Polygon',
+            7: 'Septagon' if self.buttonBox.buttons()[3].isChecked() else 'Open Polygon',
+            8: 'Octagon' if self.buttonBox.buttons()[3].isChecked() else 'Open Polygon',
+            9: 'Enneagon' if self.buttonBox.buttons()[3].isChecked() else 'Open Polygon',
+            10: 'Decagon' if self.buttonBox.buttons()[3].isChecked() else 'Open Polygon'
+        }
+        index = len(self.points) - 1
+        self.shapeName.setText(shapes.get(index + 1,
+                                         ('Undefined shape with {} number of '
+                                          'sides').format(index + 1)))
+
     def setShortcuts(self):
         """Sets the shortcut for most of the buttons"""
 
@@ -265,3 +272,43 @@ class Graph(QtWidgets.QWidget):
         self.buttonBox.buttons()[2].setShortcut("Ctrl+S")
         self.addButton.setShortcut('Ctrl+Shift+A')
         self.extraInfo.setShortcut("Ctrl+Shift+E")
+
+    def removePoint(self, input):
+        """Removes an input area as per the user"""
+
+        # Name of the figures
+        figures = {
+            2: 'Line',
+            3: 'Triangle' if self.buttonBox.buttons()[3].isChecked() else 'Angle',
+            4: 'Quadrilateral' if self.buttonBox.buttons()[3].isChecked() else 'Open Polygon',
+            5: 'Pentagon' if self.buttonBox.buttons()[3].isChecked() else 'Open Polygon',
+            6: 'Hexagon' if self.buttonBox.buttons()[3].isChecked() else 'Open Polygon',
+            7: 'Septagon' if self.buttonBox.buttons()[3].isChecked() else 'Open Polygon',
+            8: 'Octagon' if self.buttonBox.buttons()[3].isChecked() else 'Open Polygon',
+            9: 'Enneagon' if self.buttonBox.buttons()[3].isChecked() else 'Open Polygon',
+            10: 'Decagon' if self.buttonBox.buttons()[3].isChecked() else 'Open Polygon'
+        }
+
+        # Remove the input are from the program and and the GUI
+        index = self.input.index(input)
+        text = input.layout.itemAt(0).layout().itemAt(0).widget().text()
+        input.hide()
+        self.points.remove(input.xy())
+        self.input.pop(index)
+        self.coordLayout.removeRow(index+1)
+
+        # Change the name of the point
+        if not len(self.input) == index:
+            self.input[index].layout.itemAt(0).layout().itemAt(0).widget().setText(text)
+        else:
+            pass
+        self.pointNum -= 1
+        index = len(self.points)
+
+        # Change the shape name in the GUI
+        self.shapeName.setText(figures.get(index,
+                                          ('Undefined shape with {} number of '
+                                           'sides').format(index + 1)))
+        if self.shapeName.text() == 'Line':
+            self.shapeInfo.distance.setText("N/A")
+            self.shapeInfo.distance.setStyleSheet('border: transparent')

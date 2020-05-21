@@ -58,3 +58,9 @@ def test_save(qtbot, tmpdir_factory):
 def test_addbutton(qtbot):
     qtbot.mouseClick(window.addButton, Qt.LeftButton)
     assert window.coordLayout.rowCount() == 4, "\"Add Point\" button is not working"
+
+def test_removebutton(qtbot):
+    oldRowCount = window.coordLayout.rowCount()
+    qtbot.mouseClick(window.addButton, Qt.LeftButton)
+    qtbot.mouseClick(window.input[-1].removeButton, Qt.LeftButton)
+    assert window.coordLayout.rowCount() == oldRowCount, "\"Remove Point\" button is not working"

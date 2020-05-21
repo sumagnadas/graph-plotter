@@ -11,7 +11,7 @@ def test_extrainfo(qtbot):
     qtbot.mouseClick(window.extraInfo, Qt.LeftButton)
     assert window.shapeInfo.isHidden() == False, 'Extra Info is not being shown'
 
-def test_openfigure(qtbot):
+def test_closedfigure(qtbot):
     qtbot.addWidget(window)
     qtbot.mouseClick(window.addButton, Qt.LeftButton)
     window.buttonBox.buttons()[3].setCheckState(Qt.CheckState.Unchecked)
