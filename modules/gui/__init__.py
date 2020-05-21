@@ -298,10 +298,11 @@ class Graph(QtWidgets.QWidget):
         self.coordLayout.removeRow(index+1)
 
         # Change the name of the point
-        if not len(self.input) == index:
-            self.input[index].layout.itemAt(0).layout().itemAt(0).widget().setText(text)
-        else:
-            pass
+        j = 0
+        for i in range(1, len(self.input) + 1):
+            self.input[j].layout.itemAt(0).layout().itemAt(0).widget().setText(f"Point{i}")
+            j += 1
+
         self.pointNum -= 1
         index = len(self.points)
 
