@@ -1,6 +1,6 @@
 import pytestqt
-from modules.gui import QtGui
-from modules.gui import Graph, QtWidgets
+from modules.gui import Graph, QtWidgets, QtGui
+from modules.geometry import dist, Point
 from PySide2.QtCore import Qt
 from os import path
 
@@ -16,11 +16,13 @@ def test_draw(qtbot):
     qtbot.waitForWindowShown(window)
 
     qtbot.mouseClick(window.buttonBox.buttons()[0], Qt.LeftButton)
-
-    assert window.image.grab().toImage().pixelColor(window.p1) == Qt.black, ('Line not drawn'
-                                                             'or button '
-                                                             'not working')
-    assert window.image.grab().toImage().pixelColor(window.p2) == Qt.black, ('Line not drawn'
+    graph = window.image.grab().toImage()
+    
+    for i in range(-20, 20):
+        for j in range(-20, 20):
+            p = Point(i, j)
+            if dist(window.p1, p) + dist(window.p2, p) == dist(window.p1, window.p2):
+                assert graph.pixelColor(p) == Qt.black, ('Line not drawn'
                                                              'or button '
                                                              'not working')
 

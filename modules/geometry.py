@@ -1,5 +1,6 @@
 from PySide2.QtCore import QPoint, Qt
 from PySide2 import QtGui
+import math
 
 
 class Point(QPoint):
@@ -41,3 +42,15 @@ def plot(window, closedflag):
                               window.pointNum,
                               closedflag)
     window.image.setPixmap(QtGui.QPixmap().fromImage(graph))
+
+def dist(a, b):
+    x0 = int(a.x())
+    y0 = int(a.y())
+    x3 = int(b.x())
+    y3 = int(b.y())
+    x1 = x0 if x0 >= x3 else x3
+    y1 = y0 if y0 >= y3 else y3
+    x2 = x0 if x0 < x3 else x3
+    y2 = y0 if y0 < y3 else y3
+    dist = math.sqrt(((x1 - x2) ** 2) + ((y1 - y2) ** 2))
+    return dist
