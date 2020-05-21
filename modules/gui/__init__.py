@@ -64,10 +64,13 @@ class Graph(QtWidgets.QWidget):
         self.buttonBox.addButton(save, QtWidgets.QDialogButtonBox.ActionRole)
         self.buttonBox.addButton(closedfigure, QtWidgets.QDialogButtonBox.ActionRole)
 
-        #### Layout for the window ###
+        ### Layout for the window ###
 
         self.makeWindowLayout(self.buttonBox)
         self.setImage("resources/graph.png")
+
+        # Set the shortcut keys
+        self.setShortcuts()
 
     def makeInputLayout(self):
         """ Makes the layout of the input area of the window which
@@ -85,7 +88,7 @@ class Graph(QtWidgets.QWidget):
         self.shapeName = QtWidgets.QLabel('Line')
         self.extraInfo = QtWidgets.QPushButton(text, clicked=self.info)
         self.extraInfo.setToolTip(('Show extra information '
-                                   'for the line or shape'))
+                                   'for the line or shape(Ctrl+Shift+E)'))
 
         # Adding the widgets to the layout of the window
         self.shapeInfo = ExtraInfo()
@@ -113,7 +116,7 @@ class Graph(QtWidgets.QWidget):
         # The layout area of the input
         layout = QtWidgets.QBoxLayout(QtWidgets.QBoxLayout.LeftToRight)
         self.addButton = QtWidgets.QPushButton(self.tr('+'), clicked=self.addPoint)
-        self.addButton.setToolTip('Add a new point for drawing shapes')
+        self.addButton.setToolTip('Add a new point for drawing shapes(Ctrl+Shift+A)')
 
         # The layout area for the main window
         self.windowLayout = layout
@@ -229,7 +232,7 @@ class Graph(QtWidgets.QWidget):
             self.pressedOnce = False
             self.extraInfo.setText(('Extra Info'
                                     '\N{Black Down-Pointing Triangle}'))
-
+        self.extraInfo.setShortcut("Ctrl+Shift+E")
     def closeEvent(self, e):
         if hasattr(self.shapeInfo, 'sidesLength'):
             self.shapeInfo.sidesLength.close()
@@ -254,3 +257,11 @@ class Graph(QtWidgets.QWidget):
             self.shapeName.setText(shapes.get(index + 1,
                                               ('Undefined shape with {} number of '
                                                'sides').format(index + 1)))
+    def setShortcuts(self):
+        """Sets the shortcut for most of the buttons"""
+
+        self.buttonBox.buttons()[0].setShortcut("Return")
+        self.buttonBox.buttons()[1].setShortcut("Ctrl+R")
+        self.buttonBox.buttons()[2].setShortcut("Ctrl+S")
+        self.addButton.setShortcut('Ctrl+Shift+A')
+        self.extraInfo.setShortcut("Ctrl+Shift+E")
