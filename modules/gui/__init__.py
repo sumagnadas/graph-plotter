@@ -40,6 +40,7 @@ class Graph(QtWidgets.QWidget):
         # 'Draw' Button to draw the line using user-given coordinates
         drawButton = QtWidgets.QPushButton(self.tr("Draw"),
                                            clicked=self.draw)
+        drawButton.setIcon(QtGui.QIcon("resources/icons/draw_icon.png"))
 
         # 'Reset' Button to clear everything in the input boxes
         clearButton = QtWidgets.QPushButton(self.tr("Reset"),
@@ -211,7 +212,7 @@ class Graph(QtWidgets.QWidget):
                                 self.points[index][0],
                                 self.points[index][1]))
 
-        self.input[-1].removeButton.setIcon(QtGui.QIcon(QtGui.QPixmap("resources/removeButton.png")))
+        self.input[-1].removeButton.setIcon(QtGui.QIcon(QtGui.QPixmap("resources/icons/removeButton.png")))
         self.input[-1].removeButton.show()
         input = self.input[-1]
         self.input[-1].removeButton.clicked.connect(lambda: self.removePoint(input))

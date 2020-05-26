@@ -1,8 +1,6 @@
 __pycache__/
-*.png
 include/
 README_template.md
-!resources/*.png
 Dockerfile
 .flake8
 .github

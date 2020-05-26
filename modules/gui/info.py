@@ -136,7 +136,7 @@ class ExtraInfo(QtWidgets.QWidget):
                     x2 = x0 if x0 < x3 else x3
                     y2 = y0 if y0 < y3 else y3
                     dist = math.sqrt(((x1 - x2) ** 2) + ((y1 - y2) ** 2))
-                    self.sidesLayout.addRow(f'P{len(self.points)} to P1 = ',
+                    self.sidesLayout.addRow(f'P{len(self.points)}{x0, y0} to P1{x3, y3} = ',
                     QtWidgets.QLabel(str(dist)))
 
             self.sidesLength.setLayout(self.sidesLayout)
