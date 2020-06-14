@@ -2,11 +2,12 @@ from PySide2 import QtWidgets, QtGui, QtCore
 from PySide2.QtWidgets import QFileDialog, QDialog, QCheckBox
 from .input import NumInput, PointInput
 from .info import ExtraInfo
-from os.path import abspath
+from .customizations import CustomizeMenu
+from os.path import abspath, isfile
+from os import remove
 from modules import geometry
 import datetime
 import math
-
 
 
 class Graph(QtWidgets.QWidget):
@@ -15,12 +16,13 @@ class Graph(QtWidgets.QWidget):
     def __init__(self):
         super().__init__()
         ### Some values and widgets needed for the window ###
+        self.pencolor = QtCore.Qt.black
         self.closedFigure = False
         self.beingTested = False
         self.fileDir = ''
         self.pointNum = 2
         self.image = QtWidgets.QLabel()  # Image container for the graph
-
+        self.name = "resources/graph.png"
         self.pressedOnce = False
         self.points = []
         # Input boxes for the first point of the line
@@ -36,7 +38,6 @@ class Graph(QtWidgets.QWidget):
         self.points[1].extend([self.x_coord2, self.y_coord2])
 
         ### Buttons for plotting the graph and clearing the text boxes ###
-
         # 'Draw' Button to draw the line using user-given coordinates
         drawButton = QtWidgets.QPushButton(self.tr("Draw"),
                                            clicked=self.draw)
@@ -55,20 +56,24 @@ class Graph(QtWidgets.QWidget):
         closedfigure.setCheckState(QtCore.Qt.CheckState.Checked)
         closedfigure.stateChanged.connect(self.shapeNameChange)
 
+        menuButton =  QtWidgets.QPushButton(self.tr("Customize"))
+        menuButton.setMenu(CustomizeMenu("Customize", self,
+                                         self.image.size().width(),
+                                         self.image.size().height(),
+                                         parent=menuButton))
         ### Widget containing the main buttons of the application ###
-
         self.buttonBox = QtWidgets.QDialogButtonBox(QtCore.Qt.Vertical)
         self.buttonBox.addButton(drawButton,
                                  QtWidgets.QDialogButtonBox.ActionRole)
         self.buttonBox.addButton(clearButton,
                                  QtWidgets.QDialogButtonBox.ActionRole)
         self.buttonBox.addButton(save, QtWidgets.QDialogButtonBox.ActionRole)
+        self.buttonBox.addButton(menuButton, QtWidgets.QDialogButtonBox.ActionRole)
         self.buttonBox.addButton(closedfigure, QtWidgets.QDialogButtonBox.ActionRole)
 
         ### Layout for the window ###
-
+        self.setStyleSheet('QMenu::item:selected{background: transparent; color: #000099}')
         self.makeWindowLayout(self.buttonBox)
-        self.setImage("resources/graph.png")
 
         # Set the shortcut keys
         self.setShortcuts()
@@ -133,11 +138,11 @@ class Graph(QtWidgets.QWidget):
     def setImage(self, filename):
         '''Set the image for the graph'''
 
-        self.graph_image = QtGui.QImage(abspath(filename))
+        self.graph_image = QtGui.QImage(abspath(filename)) if not isinstance(filename, QtGui.QImage) else filename
         self.image.setPixmap(QtGui.QPixmap().fromImage(self.graph_image))
 
     def draw(self):
-        '''Draw a line usself.ing the coordinates of the points
+        '''Draw a line using the coordinates of the points
            provided by the user'''
 
         self.check()
@@ -145,7 +150,7 @@ class Graph(QtWidgets.QWidget):
                                  int(self.y_coord1.text()))
         self.p2 = geometry.Point(int(self.x_coord2.text()),
                                  int(self.y_coord2.text()))
-        geometry.plot(self, self.buttonBox.buttons()[3].isChecked())
+        geometry.plot(self, self.buttonBox.buttons()[4].isChecked(), self.pencolor)
 
     def clear(self):
         '''Not to be called by the program
@@ -161,16 +166,14 @@ class Graph(QtWidgets.QWidget):
     def save(self):
         if not self.beingTested:
             caption = self.tr('Choose a filename for saving the graph')
-            currentDT = datetime.datetime.now()
-            currentTime = currentDT.strftime("%H:%M:%S")
-            defFilename = self.fileDir + "graph-" + currentTime + ".png"
             self.dialog = QFileDialog()
             filename = self.dialog.getSaveFileName(self,
-            caption,
-            abspath('./untitled.png'),
-            self.tr('Images (*.png)'))
-            self.name = filename[0] if len(filename[0]) > 1 else defFilename
-            self.image.grab().toImage().save(self.name, "PNG")
+                caption,
+                abspath('./untitled.png'),
+                self.tr('Images (*.png)'))
+            if filename[1]:
+                self.name = filename[0]
+                self.graph_image.save(self.name, 'PNG')
         else:
             self.defFilename = str(self.fileDir) + ("/img.png")
             self.image.grab().toImage().save(str(self.defFilename), "PNG")
@@ -314,3 +317,5 @@ class Graph(QtWidgets.QWidget):
         if self.shapeName.text() == 'Line':
             self.shapeInfo.distance.setText("N/A")
             self.shapeInfo.distance.setStyleSheet('border: transparent')
+    def closeEvent(self, e):
+        remove("temp.png") if isfile("temp.png") else None

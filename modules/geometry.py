@@ -1,6 +1,7 @@
 from PySide2.QtCore import QPoint, Qt
 from PySide2 import QtGui
 import math
+from copy import deepcopy, copy
 
 
 class Point(QPoint):
@@ -13,10 +14,9 @@ class Point(QPoint):
         y = -y + 299
         super().__init__(x, y)
 
-def plot(window, closedflag):
-    graph = QtGui.QImage()
-    graph.load("resources/graph.png")
-    pen = QtGui.QPen(Qt.black, 5, Qt.SolidLine)
+def plot(window, closedflag, color):
+    graph = copy(window.graph_image)
+    pen = QtGui.QPen(color, 5, Qt.SolidLine)
     p = QtGui.QPainter()
     p.begin(graph)
     p.setPen(pen)
@@ -37,11 +37,13 @@ def plot(window, closedflag):
         else:
             pass
     p.end()
+    graph.save("temp.png", 'PNG')
     window.shapeInfo.updateInfo(window.points,
                               window.shapeName,
                               window.pointNum,
                               closedflag)
     window.image.setPixmap(QtGui.QPixmap().fromImage(graph))
+    window.graph_image = copy(graph)
 
 def dist(a, b):
     x0 = int(a.x())

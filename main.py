@@ -14,9 +14,10 @@ def main():
     HEIGHT = int(rect.height() * (80.97 / 100))  # Width and height of the graph
 
     # Configures the graph image according to the screen size
-    configureImage(WIDTH, HEIGHT)
+    image = configureImage(WIDTH, HEIGHT)
 
     graphPlotter = Graph()  # Make the window
+    graphPlotter.setImage(image)
     graphPlotter.show()
     sys.exit(app.exec_())
 

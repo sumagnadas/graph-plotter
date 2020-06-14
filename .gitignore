@@ -5,3 +5,7 @@ Dockerfile
 .flake8
 .github
 .pytest_cache/
+build/
+dist/
+graph_plotter.egg-info/
+image*
