@@ -192,14 +192,14 @@ class Graph(QtWidgets.QWidget):
 
         # Name of the shape
         shapes = {
-            3: 'Triangle' if self.buttonBox.buttons()[3].isChecked() else 'Angle',
-            4: 'Quadrilateral' if self.buttonBox.buttons()[3].isChecked() else 'Open Polygon',
-            5: 'Pentagon' if self.buttonBox.buttons()[3].isChecked() else 'Open Polygon',
-            6: 'Hexagon' if self.buttonBox.buttons()[3].isChecked() else 'Open Polygon',
-            7: 'Septagon' if self.buttonBox.buttons()[3].isChecked() else 'Open Polygon',
-            8: 'Octagon' if self.buttonBox.buttons()[3].isChecked() else 'Open Polygon',
-            9: 'Enneagon' if self.buttonBox.buttons()[3].isChecked() else 'Open Polygon',
-            10: 'Decagon' if self.buttonBox.buttons()[3].isChecked() else 'Open Polygon'
+            3: 'Triangle' if self.buttonBox.buttons()[4].isChecked() else 'Angle',
+            4: 'Quadrilateral' if self.buttonBox.buttons()[4].isChecked() else 'Open Polygon',
+            5: 'Pentagon' if self.buttonBox.buttons()[4].isChecked() else 'Open Polygon',
+            6: 'Hexagon' if self.buttonBox.buttons()[4].isChecked() else 'Open Polygon',
+            7: 'Septagon' if self.buttonBox.buttons()[4].isChecked() else 'Open Polygon',
+            8: 'Octagon' if self.buttonBox.buttons()[4].isChecked() else 'Open Polygon',
+            9: 'Enneagon' if self.buttonBox.buttons()[4].isChecked() else 'Open Polygon',
+            10: 'Decagon' if self.buttonBox.buttons()[4].isChecked() else 'Open Polygon'
         }
 
         # Input boxes for the points which are to be added
@@ -254,14 +254,14 @@ class Graph(QtWidgets.QWidget):
     def shapeNameChange(self, e):
         shapes = {
             2: 'Line',
-            3: 'Triangle' if self.buttonBox.buttons()[3].isChecked() else 'Angle',
-            4: 'Quadrilateral' if self.buttonBox.buttons()[3].isChecked() else 'Open Polygon',
-            5: 'Pentagon' if self.buttonBox.buttons()[3].isChecked() else 'Open Polygon',
-            6: 'Hexagon' if self.buttonBox.buttons()[3].isChecked() else 'Open Polygon',
-            7: 'Septagon' if self.buttonBox.buttons()[3].isChecked() else 'Open Polygon',
-            8: 'Octagon' if self.buttonBox.buttons()[3].isChecked() else 'Open Polygon',
-            9: 'Enneagon' if self.buttonBox.buttons()[3].isChecked() else 'Open Polygon',
-            10: 'Decagon' if self.buttonBox.buttons()[3].isChecked() else 'Open Polygon'
+            3: 'Triangle' if self.buttonBox.buttons()[4].isChecked() else 'Angle',
+            4: 'Quadrilateral' if self.buttonBox.buttons()[4].isChecked() else 'Open Polygon',
+            5: 'Pentagon' if self.buttonBox.buttons()[4].isChecked() else 'Open Polygon',
+            6: 'Hexagon' if self.buttonBox.buttons()[4].isChecked() else 'Open Polygon',
+            7: 'Septagon' if self.buttonBox.buttons()[4].isChecked() else 'Open Polygon',
+            8: 'Octagon' if self.buttonBox.buttons()[4].isChecked() else 'Open Polygon',
+            9: 'Enneagon' if self.buttonBox.buttons()[4].isChecked() else 'Open Polygon',
+            10: 'Decagon' if self.buttonBox.buttons()[4].isChecked() else 'Open Polygon'
         }
         index = len(self.points) - 1
         self.shapeName.setText(shapes.get(index + 1,

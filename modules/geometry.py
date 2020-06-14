@@ -43,7 +43,6 @@ def plot(window, closedflag, color):
                               window.pointNum,
                               closedflag)
     window.image.setPixmap(QtGui.QPixmap().fromImage(graph))
-    window.graph_image = copy(graph)
 
 def dist(a, b):
     x0 = int(a.x())
