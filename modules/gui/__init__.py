@@ -97,7 +97,7 @@ class Graph(QtWidgets.QWidget):
                                    'for the line or shape(Ctrl+Shift+E)'))
 
         # Adding the widgets to the layout of the window
-        self.shapeInfo = ExtraInfo()
+        self.shapeInfo = ExtraInfo(self)
         self.widget.setLayout(self.coordLayout)
         self.inputLayout.addRow(self.str, self.shapeName)
         self.inputLayout.addRow(self.extraInfo, QtWidgets.QWidget())
@@ -165,18 +165,20 @@ class Graph(QtWidgets.QWidget):
 
     def save(self):
         if not self.beingTested:
+            image = self.trans2white(QtGui.QImage('temp.png'))
             caption = self.tr('Choose a filename for saving the graph')
             self.dialog = QFileDialog()
-            filename = self.dialog.getSaveFileName(self,
+            filename, ok = QFileDialog().getSaveFileName(self,
                 caption,
                 abspath('./untitled.png'),
                 self.tr('Images (*.png)'))
-            if filename[1]:
-                self.name = filename[0]
-                self.graph_image.save(self.name, 'PNG')
+            if filename:
+                self.name = filename
+                image.save(self.name, 'PNG')
         else:
             self.defFilename = str(self.fileDir) + ("/img.png")
-            self.image.grab().toImage().save(str(self.defFilename), "PNG")
+            image = self.trans2white(QtGui.QImage("temp.png"))
+            image.save(str(self.defFilename), "PNG")
 
 
     def check(self):
@@ -317,5 +319,12 @@ class Graph(QtWidgets.QWidget):
         if self.shapeName.text() == 'Line':
             self.shapeInfo.distance.setText("N/A")
             self.shapeInfo.distance.setStyleSheet('border: transparent')
+    def trans2white(self, image):
+        bg = QtGui.QImage(image.size(), QtGui.QImage.Format_RGB32)
+        bg.fill(QtCore.Qt.white)
+        p = QtGui.QPainter(bg)
+        p.drawImage(0, 0, image)
+        return bg
+
     def closeEvent(self, e):
         remove("temp.png") if isfile("temp.png") else None

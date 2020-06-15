@@ -5,9 +5,9 @@ import time
 
 
 class ExtraInfo(QtWidgets.QWidget):
-    def __init__(self):
+    def __init__(self, parent):
         super().__init__()
-
+        self.parent_widget = parent
         self.updateNeeded = True
         self.closedflag = True
         layout = QtWidgets.QFormLayout()
@@ -105,7 +105,7 @@ class ExtraInfo(QtWidgets.QWidget):
 
     def sidesDialog(self):
         if True:
-            self.sidesLength = QtWidgets.QWidget()
+            self.sidesLength = QtWidgets.QDialog(self.parent_widget)
             self.sidesLayout = QtWidgets.QFormLayout()
             self.sidesLayout.addRow(QtWidgets.QLabel(('Lengths of'
                                                       'the lines :-')))
@@ -140,8 +140,4 @@ class ExtraInfo(QtWidgets.QWidget):
                     QtWidgets.QLabel(str(dist)))
 
             self.sidesLength.setLayout(self.sidesLayout)
-            if self.sidesLength.isHidden():
-                self.sidesLength.show()
-                del self.sidesLayout
-            else:
-                pass
+            self.sidesLength.exec_()
