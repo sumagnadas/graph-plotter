@@ -86,8 +86,9 @@ def test_bgchange(qtbot):
     image = configureImage(WIDTH, HEIGHT, backgroundcolour=Qt.red)
     gridColor = 0
     bgColor = 0
-    for i in range(0, image.size().width()):
-        for j in range(0, image.size().height()):
+    image =  image.scaled(WIDTH, HEIGHT)
+    for i in range(0, WIDTH):
+        for j in range(0, HEIGHT):
             p = QPoint(i, j)
             if image.pixelColor(p) == Qt.red:
                 bgColor += 1
@@ -100,8 +101,9 @@ def test_gridchange(qtbot):
     image = configureImage(WIDTH, HEIGHT, gridcolour=Qt.red)
     gridColor = 0
     bgColor = 0
-    for i in range(0, image.size().width()):
-        for j in range(0, image.size().height()):
+    image =  image.scaled(WIDTH, HEIGHT)
+    for i in range(0, WIDTH):
+        for j in range(0, HEIGHT):
             p = QPoint(i, j)
             if image.pixelColor(p) == Qt.red:
                 bgColor += 1
