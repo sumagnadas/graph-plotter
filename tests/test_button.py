@@ -98,7 +98,7 @@ def test_bgchange(qtbot):
     assert (bgColor > gridColor) is True, 'Background colour of the graph is not getting changed'
 
 def test_gridchange(qtbot):
-    image = configureImage(WIDTH, HEIGHT, gridcolour=Qt.red)
+    image = configureImage(WIDTH, HEIGHT, gridcolour=Qt.red, backgroundcolour=Qt.transparent)
     gridColor = 0
     bgColor = 0
     image =  image.scaled(WIDTH, HEIGHT)
@@ -106,8 +106,8 @@ def test_gridchange(qtbot):
         for j in range(0, HEIGHT):
             p = QPoint(i, j)
             if image.pixelColor(p) == Qt.red:
-                bgColor += 1
-            else:
                 gridColor += 1
+            else:
+                bgColor += 1
 
     assert (gridColor < bgColor) is True, 'Grid colour of the graph is not getting changed'
