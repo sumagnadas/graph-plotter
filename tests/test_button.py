@@ -2,7 +2,7 @@ import pytestqt
 from modules.gui import Graph, QtWidgets, QtGui
 from modules.geometry import dist, Point
 from modules import configureImage
-from PySide2.QtCore import Qt
+from PySide2.QtCore import Qt, QPoint
 from os import path
 
 app = QtWidgets.QApplication()
@@ -81,3 +81,31 @@ def test_intInput(qtbot):
     for i in window.points:
         assert 'A' not in i[0].text(), str
         assert 'A' not in i[1].text(), str
+
+def test_bgchange(qtbot):
+    image = configureImage(WIDTH, HEIGHT, backgroundcolour=Qt.red)
+    gridColor = 0
+    bgColor = 0
+    for i in range(0, WIDTH):
+        for j in range(0, HEIGHT):
+            p = QPoint(i, j)
+            if image.pixelColor(p) == Qt.red:
+                bgColor += 1
+            else:
+                gridColor += 1
+
+    assert (bgColor > gridColor) is True, 'Background colour of the graph is not getting changed'
+
+def test_gridchange(qtbot):
+    image = configureImage(WIDTH, HEIGHT, gridcolour=Qt.red)
+    gridColor = 0
+    bgColor = 0
+    for i in range(0, WIDTH):
+        for j in range(0, HEIGHT):
+            p = QPoint(i, j)
+            if image.pixelColor(p) == Qt.red:
+                bgColor += 1
+            else:
+                gridColor += 1
+
+    assert (gridColor < bgColor) is True, 'Grid colour of the graph is not getting changed'

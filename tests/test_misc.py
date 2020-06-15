@@ -1,6 +1,5 @@
 import pytestqt
-from modules.gui import QtGui
-from modules.gui import Graph, QtWidgets
+from modules.gui import QtGui, Graph, QtWidgets
 from PySide2.QtCore import Qt
 from os import path
 
