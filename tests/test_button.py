@@ -4,19 +4,17 @@ from modules.geometry import dist, Point
 from modules import configureImage
 from PySide2.QtCore import Qt, QPoint
 from os import path
-#from PySide2.QtWidget import QApplication
-
-app = QtWidgets.QApplication(["test"])
-rect = app.primaryScreen().availableGeometry()
-WIDTH = int(rect.width() * (43.92 / 100))
-HEIGHT = int(rect.height() * (80.97 / 100))
-
-image = configureImage(WIDTH, HEIGHT)
-window = Graph()
-window.setImage(image)
 
 def test_coordBox(qtbot):
-    window.show()
+    app = QtWidgets.QApplication.instance()
+    rect = app.primaryScreen().availableGeometry()
+    WIDTH = int(rect.width() * (43.92 / 100))
+    HEIGHT = int(rect.height() * (80.97 / 100))
+
+    window = Graph()
+    image = configureImage(WIDTH, HEIGHT)
+    window.setImage(image)
+    #window.show()
     str = ('Empty '
            'input box should be taken as zero')
 
@@ -32,7 +30,15 @@ def test_coordBox(qtbot):
         assert i[1].text() == '0', str
 
 def test_draw(qtbot):
-    window.show()
+    app = QtWidgets.QApplication.instance()
+    rect = app.primaryScreen().availableGeometry()
+    WIDTH = int(rect.width() * (43.92 / 100))
+    HEIGHT = int(rect.height() * (80.97 / 100))
+
+    image = configureImage(WIDTH, HEIGHT)
+    window = Graph()
+    window.setImage(image)
+    #window.show()
 
     window.x_coord1.setText('10')
     window.y_coord1.setText('10')
@@ -53,6 +59,15 @@ def test_draw(qtbot):
 
 
 def test_save(qtbot, tmpdir_factory):
+    app = QtWidgets.QApplication.instance()
+    rect = app.primaryScreen().availableGeometry()
+    WIDTH = int(rect.width() * (43.92 / 100))
+    HEIGHT = int(rect.height() * (80.97 / 100))
+
+    image = configureImage(WIDTH, HEIGHT)
+    window = Graph()
+    window.setImage(image)
+    #window.show()
     window.x_coord1.setText('10')
     window.y_coord1.setText('10')
     window.x_coord2.setText('20')
@@ -69,6 +84,15 @@ def test_save(qtbot, tmpdir_factory):
                                                          'is not working')
 
 def test_intInput(qtbot):
+    app = QtWidgets.QApplication.instance()
+    window = Graph()
+    rect = app.primaryScreen().availableGeometry()
+    WIDTH = int(rect.width() * (43.92 / 100))
+    HEIGHT = int(rect.height() * (80.97 / 100))
+
+    image = configureImage(WIDTH, HEIGHT)
+    window = Graph()
+    window.setImage(image)
     qtbot.addWidget(window)
     str = 'Coordinates input box is not supposed take in letter as input'
 
@@ -84,6 +108,10 @@ def test_intInput(qtbot):
         assert 'A' not in i[1].text(), str
 
 def test_bgchange(qtbot):
+    app = QtWidgets.QApplication.instance()
+    rect = app.primaryScreen().availableGeometry()
+    WIDTH = int(rect.width() * (43.92 / 100))
+    HEIGHT = int(rect.height() * (80.97 / 100))
     image = configureImage(WIDTH, HEIGHT, backgroundcolour=Qt.red)
     gridColor = 0
     bgColor = 0
@@ -99,6 +127,10 @@ def test_bgchange(qtbot):
     assert (bgColor > gridColor) is True, 'Background colour of the graph is not getting changed'
 
 def test_gridchange(qtbot):
+    app = QtWidgets.QApplication.instance()
+    rect = app.primaryScreen().availableGeometry()
+    WIDTH = int(rect.width() * (43.92 / 100))
+    HEIGHT = int(rect.height() * (80.97 / 100))
     image = configureImage(WIDTH, HEIGHT, gridcolour=Qt.red, backgroundcolour=Qt.transparent)
     gridColor = 0
     bgColor = 0
