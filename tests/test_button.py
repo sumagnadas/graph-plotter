@@ -1,21 +1,15 @@
 import pytestqt
-from modules.gui import Graph, QtWidgets, QtGui
+from modules.gui import Graph, QtGui, QtWidgets
 from modules.geometry import dist, Point
 from modules import configureImage
 from PySide2.QtCore import Qt, QPoint
 from os import path
 
-app = QtWidgets.QApplication()
-rect = app.primaryScreen().availableGeometry()
-WIDTH = int(rect.width() * (43.92 / 100))
-HEIGHT = int(rect.height() * (80.97 / 100))
+def test_coordBox(qtbot, qapp):
+    print(qapp.instance())
+    window = Graph()
+    window.setImage(QtGui.QImage("resources/graph.png"))
 
-image = configureImage(WIDTH, HEIGHT)
-window = Graph()
-window.setImage(image)
-
-def test_coordBox(qtbot):
-    window.show()
     str = ('Empty '
            'input box should be taken as zero')
 
@@ -30,8 +24,9 @@ def test_coordBox(qtbot):
         assert i[0].text() == '0', str
         assert i[1].text() == '0', str
 
-def test_draw(qtbot):
-    window.show()
+def test_draw(qtbot, qapp):
+    window = Graph()
+    window.setImage(QtGui.QImage("resources/graph.png"))
 
     window.x_coord1.setText('10')
     window.y_coord1.setText('10')
@@ -40,8 +35,7 @@ def test_draw(qtbot):
     qtbot.waitForWindowShown(window)
 
     qtbot.mouseClick(window.buttonBox.buttons()[0], Qt.LeftButton)
-    graph = window.image.grab().toImage()
-    app.exit()
+    graph = window.graph_image
     for i in range(-20, 20):
         for j in range(-20, 20):
             p = Point(i, j)
@@ -51,12 +45,15 @@ def test_draw(qtbot):
                                                              'not working')
 
 
-def test_save(qtbot, tmpdir_factory):
+def test_save(qtbot, qapp, tmpdir_factory):
+    window = Graph()
+    window.setImage(QtGui.QImage("resources/graph.png"))
+
     window.x_coord1.setText('10')
     window.y_coord1.setText('10')
     window.x_coord2.setText('20')
     window.y_coord2.setText('20')
-    qtbot.waitForWindowShown(window)
+    window.setImage(QtGui.QImage("resources/graph.png"))
 
     window.beingTested = True
     fn = tmpdir_factory.mktemp("data")
@@ -67,7 +64,10 @@ def test_save(qtbot, tmpdir_factory):
     assert fn.join("img.png").check() is True, ('Save button '
                                                          'is not working')
 
-def test_intInput(qtbot):
+def test_intInput(qtbot, qapp):
+    window = Graph()
+    window.setImage(QtGui.QImage("resources/graph.png"))
+
     qtbot.addWidget(window)
     str = 'Coordinates input box is not supposed take in letter as input'
 
@@ -82,8 +82,11 @@ def test_intInput(qtbot):
         assert 'A' not in i[0].text(), str
         assert 'A' not in i[1].text(), str
 
-def test_bgchange(qtbot):
+def test_bgchange(qtbot, qapp):
+    WIDTH = 599
+    HEIGHT = 599
     image = configureImage(WIDTH, HEIGHT, backgroundcolour=Qt.red)
+
     gridColor = 0
     bgColor = 0
     image =  image.scaled(WIDTH, HEIGHT)
@@ -97,8 +100,11 @@ def test_bgchange(qtbot):
 
     assert (bgColor > gridColor) is True, 'Background colour of the graph is not getting changed'
 
-def test_gridchange(qtbot):
+def test_gridchange(qtbot, qapp):
+    WIDTH = 599
+    HEIGHT = 599
     image = configureImage(WIDTH, HEIGHT, gridcolour=Qt.red, backgroundcolour=Qt.transparent)
+
     gridColor = 0
     bgColor = 0
     image =  image.scaled(WIDTH, HEIGHT)

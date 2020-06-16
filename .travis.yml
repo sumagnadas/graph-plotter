@@ -36,15 +36,20 @@ jobs:
 addons:
   apt:
     packages:
-      - build-essential
-      - libssl-dev
-      - libffi-dev
       - x11-utils
       - libxkbcommon-x11-0
+      - libxcb-keysyms1-dev
+      - libx11-xcb-dev
+      - libxcb-xinerama0-dev
+      - libxcb-randr0-dev
+      - libxcb-render0-dev
+      - libxcb-image0-dev
+      - libxcb-icccm4-dev
+      - libxcb-render-util0-dev
 install:
   - if [ "$TRAVIS_OS_NAME" = "windows" ]; then py -m pip install -r requirements.txt; fi
-  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then pip3 install -r requirements.txt; fi
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then export DISPLAY=:99.0; /sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -screen 0 1920x1200x24 -ac +extension GLX +render -noreset;sleep 3;pip3 install -r requirements.txt; fi
   - if [ "$TRAVIS_OS_NAME" = "osx" ]; then pip3 install -r requirements.txt; fi
 script:
-  - coverage run -m pytest -vxrs
+  - pytest -vxrs --cov=./
   - codecov
