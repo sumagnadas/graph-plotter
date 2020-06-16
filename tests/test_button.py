@@ -5,7 +5,7 @@ from modules import configureImage
 from PySide2.QtCore import Qt, QPoint
 from os import path
 
-app = QtWidgets.QApplication()
+app = QtWidgets.QApplication(["test"])
 rect = app.primaryScreen().availableGeometry()
 WIDTH = int(rect.width() * (43.92 / 100))
 HEIGHT = int(rect.height() * (80.97 / 100))
