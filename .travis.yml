@@ -1,5 +1,3 @@
-services:
-    - xvfb
 language: python
 jobs:
   allow_failures:
