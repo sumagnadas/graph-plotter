@@ -5,7 +5,8 @@ from modules import configureImage
 from PySide2.QtCore import Qt, QPoint
 from os import path
 
-def test_coordBox(qtbot):
+def test_coordBox(qtbot, qapp):
+    print(qapp.instance())
     window = Graph()
     window.setImage(QtGui.QImage("resources/graph.png"))
 
@@ -23,7 +24,7 @@ def test_coordBox(qtbot):
         assert i[0].text() == '0', str
         assert i[1].text() == '0', str
 
-def test_draw(qtbot):
+def test_draw(qtbot, qapp):
     window = Graph()
     window.setImage(QtGui.QImage("resources/graph.png"))
 
@@ -44,7 +45,7 @@ def test_draw(qtbot):
                                                              'not working')
 
 
-def test_save(qtbot, tmpdir_factory):
+def test_save(qtbot, qapp, tmpdir_factory):
     window = Graph()
     window.setImage(QtGui.QImage("resources/graph.png"))
 
@@ -63,7 +64,7 @@ def test_save(qtbot, tmpdir_factory):
     assert fn.join("img.png").check() is True, ('Save button '
                                                          'is not working')
 
-def test_intInput(qtbot):
+def test_intInput(qtbot, qapp):
     window = Graph()
     window.setImage(QtGui.QImage("resources/graph.png"))
 
@@ -81,7 +82,7 @@ def test_intInput(qtbot):
         assert 'A' not in i[0].text(), str
         assert 'A' not in i[1].text(), str
 
-def test_bgchange(qtbot):
+def test_bgchange(qtbot, qapp):
     WIDTH = 599
     HEIGHT = 599
     image = configureImage(WIDTH, HEIGHT, backgroundcolour=Qt.red)
@@ -99,7 +100,7 @@ def test_bgchange(qtbot):
 
     assert (bgColor > gridColor) is True, 'Background colour of the graph is not getting changed'
 
-def test_gridchange(qtbot):
+def test_gridchange(qtbot, qapp):
     WIDTH = 599
     HEIGHT = 599
     image = configureImage(WIDTH, HEIGHT, gridcolour=Qt.red, backgroundcolour=Qt.transparent)
