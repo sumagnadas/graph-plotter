@@ -8,6 +8,7 @@ from os import path
 def test_coordBox(qtbot):
     window = Graph()
     window.setImage(QtGui.QImage("resources/graph.png"))
+
     str = ('Empty '
            'input box should be taken as zero')
 
@@ -23,15 +24,8 @@ def test_coordBox(qtbot):
         assert i[1].text() == '0', str
 
 def test_draw(qtbot):
-    app = QtWidgets.QApplication.instance()
-    rect = app.primaryScreen().availableGeometry()
-    WIDTH = int(rect.width() * (43.92 / 100))
-    HEIGHT = int(rect.height() * (80.97 / 100))
-
-    image = configureImage(WIDTH, HEIGHT)
     window = Graph()
     window.setImage(QtGui.QImage("resources/graph.png"))
-    #window.show()
 
     window.x_coord1.setText('10')
     window.y_coord1.setText('10')
@@ -40,8 +34,7 @@ def test_draw(qtbot):
     qtbot.waitForWindowShown(window)
 
     qtbot.mouseClick(window.buttonBox.buttons()[0], Qt.LeftButton)
-    graph = window.image.grab().toImage()
-    app.exit()
+    graph = window.graph_image
     for i in range(-20, 20):
         for j in range(-20, 20):
             p = Point(i, j)
