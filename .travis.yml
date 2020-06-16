@@ -52,5 +52,5 @@ install:
 script:
   - if [ "$TRAVIS_OS_NAME" = "windows" ];then pytest -vxrs --cov=./; fi
   - if [ "$TRAVIS_OS_NAME" = "osx" ]; then pytest -vxrs --cov=./; fi
-  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then "herbstluftwm &"; sleep 1; pytest -vxrs --cov=./; fi
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then QT_DEBUG_PLUGINS=1 pytest -vxrs --cov=./; fi
   - codecov
