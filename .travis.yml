@@ -46,6 +46,6 @@ install:
 script:
   - if [ "$TRAVIS_OS_NAME" = "windows" ];then pytest -vxrs --cov=./; fi
   - if [ "$TRAVIS_OS_NAME" = "osx" ]; then pytest -vxrs --cov=./; fi
-  - ldd `python -c 'import PyQt5; import os.path; print(os.path.join(os.path.dirname(PyQt5.__file__), "Qt", "plugins", "platforms", "libqxcb.so"))'`
+  - ldd `python -c 'import PySide2; import os.path; print(os.path.join(os.path.dirname(PySide2.__file__), "Qt", "plugins", "platforms", "libqxcb.so"))'`
   - if [ "$TRAVIS_OS_NAME" = "linux" ]; then pytest -vxrs; fi
   - codecov
