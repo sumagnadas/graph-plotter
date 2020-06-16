@@ -3,7 +3,7 @@ from modules.gui import QtGui, Graph, QtWidgets
 from PySide2.QtCore import Qt
 from os import path
 
-
+h = QtWidgets.QApplication.instance()
 window = Graph()
 def test_closedfigure(qtbot):
     qtbot.addWidget(window)

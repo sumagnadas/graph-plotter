@@ -1,5 +1,5 @@
 import pytestqt
-from modules.gui import Graph, QtGui
+from modules.gui import Graph
 from modules.geometry import dist, Point
 from modules import configureImage
 from PySide2.QtCore import Qt, QPoint
