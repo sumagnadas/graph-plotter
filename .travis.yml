@@ -46,5 +46,6 @@ install:
 script:
   - if [ "$TRAVIS_OS_NAME" = "windows" ];then pytest -vxrs --cov=./; fi
   - if [ "$TRAVIS_OS_NAME" = "osx" ]; then pytest -vxrs --cov=./; fi
-  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then pytest; fi
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then pytest -vxrs; fi
   - codecov
+  - python -c 'from PyQt5.QtWidgets import QApplication; QApplication([])'
