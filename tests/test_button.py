@@ -1,8 +1,9 @@
 import pytestqt
-from modules.gui import Graph, QtWidgets, QtGui
+from modules.gui import Graph, QtGui
 from modules.geometry import dist, Point
 from modules import configureImage
 from PySide2.QtCore import Qt, QPoint
+from PySide2 import QtWIdgets
 from os import path
 
 app = QtWidgets.QApplication(["test"])
