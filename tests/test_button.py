@@ -4,6 +4,7 @@ from modules.geometry import dist, Point
 from modules import configureImage
 from PySide2.QtCore import Qt, QPoint
 from os import path
+#from PySide2.QtWidget import QApplication
 
 app = QtWidgets.QApplication(["test"])
 rect = app.primaryScreen().availableGeometry()
