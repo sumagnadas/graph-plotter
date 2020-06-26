@@ -5,7 +5,7 @@ packaging==20.4
 parso==0.7.0
 pipdeptree==1.0.0
 pluggy==0.13.1
-py==1.8.2
+py==1.9.0
 pycodestyle==2.6.0
 pyparsing==2.4.7
 PySide2==5.15.0
