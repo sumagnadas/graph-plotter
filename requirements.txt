@@ -2,7 +2,7 @@ attrs==20.1.0
 importlib-metadata==1.7.0
 more-itertools==8.4.0
 packaging==20.4
-parso==0.7.0
+parso==0.8.0
 pipdeptree==1.0.0
 pluggy==0.13.1
 py==1.9.0
